@@ -18,9 +18,11 @@ public class Main{
         System.out.println("How many people are paying?");
         numPeople = scan.nextInt();
         
+        //
         System.out.println("Subtotal: " + fmt.format(bill * ((double) 5/6)));
         System.out.println("Tip: " + fmt.format((bill/6)));
         System.out.println("Total: " + fmt.format(bill));
+        
         System.out.println("Cost per Person: " + fmt.format(bill/numPeople));
         System.out.println("\t Subtotal: " + fmt.format((bill * ((double) 5/6))/numPeople));
         System.out.println("\t Tip: " + fmt.format(((bill/6)/numPeople)));

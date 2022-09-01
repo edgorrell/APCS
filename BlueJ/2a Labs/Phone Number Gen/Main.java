@@ -14,5 +14,10 @@ public class Main{
         
         num3 = (int)(10000 * Math.random());
         System.out.println(num1 + "-" + fmt1.format(num2) + "-" + fmt2.format(num3));
+        
+        /*
+         * 731-142-0671
+         * 311-498-4837
+         */
     }
 }
