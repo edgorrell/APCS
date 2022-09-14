@@ -1,20 +1,11 @@
 import java.util.Scanner;
 
-<<<<<<< Updated upstream
-public class Minesweeper extends Game{
-    //null = unknown
-    //true = clear
-    //false = mine
-    Boolean[] board = new Boolean[64];
-    int[] mines, flags;
-=======
 public class Minesweeper implements Game{
     //null: unknown
     //true: clear
     //false: flag
     Boolean[] board = new Boolean[64];
     int[] mines = new int[10];
->>>>>>> Stashed changes
     int row, col, num;
     
     public void run(Scanner scan){
@@ -25,11 +16,6 @@ public class Minesweeper implements Game{
     }
     private void print(Boolean[] board){
         for(int i = 0; i < 8; i++){
-<<<<<<< Updated upstream
-            for(int j = 0; i < 8; i++){
-                
-            }
-=======
             System.out.print((8-i) + " ");
             for(int j = 0; j < 8; j++){
                 if(board[j] == null){
@@ -41,7 +27,6 @@ public class Minesweeper implements Game{
                 }
             }
             System.out.println("");
->>>>>>> Stashed changes
         }
         System.out.println("  1 2 3 4 5 6 7 8");
     }
