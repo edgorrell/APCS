@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Minesweeper
+comment1.params=scan
+comment1.target=void\ run(java.util.Scanner)
+comment2.params=board
+comment2.target=void\ print(java.lang.Boolean[])
+comment3.params=board\ index
+comment3.target=int\ check(java.lang.Boolean[],\ int)
+comment4.params=board
+comment4.target=void\ clear(java.lang.Boolean[])
+numComments=5
