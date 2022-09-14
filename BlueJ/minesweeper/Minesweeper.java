@@ -1,7 +1,11 @@
 import java.util.Scanner;
 
 public class Minesweeper extends Game{
+    //null = unknown
+    //true = clear
+    //false = mine
     Boolean[] board = new Boolean[64];
+    int[] mines, flags;
     int row, col, num;
     
     public void run(Scanner scan){
@@ -16,7 +20,9 @@ public class Minesweeper extends Game{
     }
     private void print(Boolean[] board){
         for(int i = 0; i < 8; i++){
-            for(int i = 0; i < 8; i++)
+            for(int j = 0; i < 8; i++){
+                
+            }
         }
     }
 }
