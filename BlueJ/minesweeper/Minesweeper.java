@@ -7,32 +7,28 @@ public class Minesweeper implements Game{
     //false: flags
     Boolean[] board = new Boolean[64];
     int[] mines = new int[10];
+    Boolean next = false;
     int row = 0, col = 0, num;
-    boolean win = false, next = false;
+    boolean win = false;
     
     public void run(Scanner scan){
+        // init board & mines
         for(int i = 0; i < 64; i++){
             board[i] = null;
         }
         for(int i = 0; i < 10; i++){
             num = (int)(63*Math.random());
-            while(!next){
-                for(int j = 0; j < 10; j++){
-                    if(num == mines[j]){
-                        next = false;
-                        break;
-                    } else {
-                        next = true;
-                    }
-                }
-            }
+            System.out.println((int) num);
+            mines[i] = (int) num;
         }
+        
         print(board);
         for(int i = 0; i < 10; i++){
-            System.out.println(mines[i]);
+            System.out.print(mines[i] + ", ");
         }
         while(!win){
-            
+            scan.nextLine();
+            win = true;
         }
     }
     
