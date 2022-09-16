@@ -17,27 +17,30 @@ public class Minesweeper implements Game{
             board[i] = null;
         }
         for(int i = 0; i < 10; i++){
+            next = false;
             num = (int)(63*Math.random());
-            System.out.println((int) num);
-            mines[i] = (int) num;
+            while(!next){
+                if(getArrayIndex(mines, num) == -1){
+                    next = true;
+                }
+                num = (int)(63*Math.random());
+            }
+            mines[i] = num;
         }
         
-        print(board);
-        for(int i = 0; i < 10; i++){
-            System.out.print(mines[i] + ", ");
-        }
-        while(!win){
+        printMines(board, mines);
+        while(!win){;
             scan.nextLine();
             win = true;
         }
     }
-    
     
     private String check(Boolean[] board, int index){
         // 1 2 3
         // 4 x 5
         // 6 7 8
         int[] spaces = {1,2,3,4,5,6,7,8};
+        int[] near = {-9,-8,-7,-1,1,7,8,9};
         int num = 0;
         switch(index % 8){
             case 0:
@@ -63,56 +66,13 @@ public class Minesweeper implements Game{
             spaces[7] = 0;
         }
         for(int i = 0; i < 8; i++){
-            switch(spaces[i]){
-                case 1:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index - 9))){
-                        num ++;
-                    }
-                    break;
-                case 2:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index - 8))){
-                        num ++;
-                    }
-                    break;
-                case 3:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index - 7))){
-                        num ++;
-                    }
-                    break;
-                case 4:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index - 1))){
-                        num ++;
-                    }
-                    break;
-                case 5:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index + 1))){
-                        num ++;
-                    }
-                    break;
-                case 6:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index + 7))){
-                        num ++;
-                    }
-                    break;
-                case 7:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index + 8))){
-                        num ++;
-                    }
-                    break;
-                case 8:
-                    if(Arrays.stream(mines).anyMatch(x -> x == (index + 9))){
-                        num ++;
-                    }
-                    break;
-                case 0:
-                    break;
+            if(spaces[i] != 0){
+                if(getArrayIndex(mines,(index +  near[i])) != -1){
+                    num++;
+                }
             }
         }
-        if(num != 0){
-            return String.valueOf(num);
-        } else {
-            return " ";
-        }
+        return String.valueOf(num);
     }
     
     private void clear(Boolean[] board){
@@ -136,16 +96,28 @@ public class Minesweeper implements Game{
         System.out.println("   1 2 3 4 5 6 7 8");
     }
     
+    public void printMines(Boolean[] board, int[] mines){
+        for(int i = 0; i < 8; i++){
+            System.out.print(" " + (8-i) + "   ");
+            for(int j = 0; j < 8; j++){
+                if(getArrayIndex(mines,((8*i) + j)) != -1){
+                    System.out.print("X ");
+                } else {
+                    System.out.print(check(board, ((8*i) + j)) + " ");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.println("\n     1 2 3 4 5 6 7 8");
+    }
+    
     private int getArrayIndex(int[] arr,int value) {
-        int k=0;
-        
         for(int i=0;i<arr.length;i++){
-
             if(arr[i]==value){
-                k=i;
-                break;
+                return i;
             }
         }
-        return k;
+        
+        return -1;
     }
 }

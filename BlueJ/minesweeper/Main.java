@@ -8,7 +8,8 @@ public class Main{
         Game game = new Minesweeper();
         game.run(scan);
     }
+    
     public static void clear(){
         
-    }
+     }
 }
