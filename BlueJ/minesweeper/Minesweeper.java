@@ -46,6 +46,21 @@ public class Minesweeper implements Game{
             System.out.println("noice");
             win = true;
         }
+        
+        if (num == 1){
+            Main.clear();
+            print(board);
+            System.out.println("Row of square to dig:\n> ");
+            row = scan.nextInt();
+            Main.clear();
+            print(board, row, 0);
+            System.out.println("Column of square to dig:\n> ");
+            col = scan.nextInt();
+            Main.clear();
+            print(board, row ,col);
+        } else {
+            
+        }
     }
     
     private int check(Boolean[] board, int index){
