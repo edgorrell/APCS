@@ -9,7 +9,7 @@ public class Minesweeper implements Game{
     int[] mines = new int[10];
     
     Boolean next = false;
-    int row = 0, col = 0, num;
+    int row = 0, col = 0, num, num2;
     boolean win = false;
     
     public void run(Scanner scan){
@@ -29,47 +29,76 @@ public class Minesweeper implements Game{
             mines[i] = num;
         }
         
-        while(!win){;
+        while(!win){
             next = false;
+            
             while(!next){
+                num = 0;
+                num2 = 0;
+                // determine to dig or flag
+                while(!(num == 1 || num == 2)){
+                    Main.clear();
+                    print();
+                    System.out.println("\nChoose an option:");
+                    System.out.println("  Dig a square: 1");
+                    System.out.println("  Place a flag: 2");
+                    System.out.print("> ");
+                    num = scan.nextInt();
+                    if(num == 1 || num == 2)next = true;
+                }
+                
+                // square to preform action
                 Main.clear();
-                print(board);
-                System.out.println("\nChoose an option:");
-                System.out.println("  Dig a square: 1");
-                System.out.println("  Place a flag: 2");
-                System.out.print("> ");
-                num = scan.nextInt();
-                if(num == 1 || num == 2){
+                print();
+                if(num == 1) System.out.println("Row of square to dig:\n> ");
+                else System.out.println("Row of square to flag:\n> ");
+                row = scan.nextInt();
+                Main.clear();
+                print(row, 0);
+                if(num == 1)System.out.println("Column of square to dig:\n> ");
+                else System.out.println("Column of square to flag:\n> ");
+                col = scan.nextInt();
+                num2 = 0;
+                
+                // confirmation of action
+                while(!(num2 == 1 || num2 == 2)){
+                    Main.clear();
+                    print(row ,col);
+                    if(num == 1)
+                    System.out.println("Dig at (" + row + ", " + col + ")?");
+                    else
+                    System.out.println("Place flag at (" + row + ", " + col + ")?");
+                    System.out.println("Yes: 1");
+                    System.out.println("No: 2");
+                    num2 = scan.nextInt();
+                }
+                if(num2 == 1){
                     next = true;
+                } else {
+                    next = false;
                 }
             }
-            System.out.println("noice");
-            win = true;
-        }
-        
-        if (num == 1){
-            Main.clear();
-            print(board);
-            System.out.println("Row of square to dig:\n> ");
-            row = scan.nextInt();
-            Main.clear();
-            print(board, row, 0);
-            System.out.println("Column of square to dig:\n> ");
-            col = scan.nextInt();
-            Main.clear();
-            print(board, row ,col);
-        } else {
             
+            
+            if(num == 1){
+                
+            } else {
+                
+            }
+            System.out.print("how");
+            scan.nextLine();
+            win = true;
         }
     }
     
-    private int check(Boolean[] board, int index){
+    private int check(int index){
         // 1 2 3
         // 4 x 5
         // 6 7 8
         int[] spaces = {1,2,3,4,5,6,7,8};
         int[] near = {-9,-8,-7,-1,1,7,8,9};
         int num = 0;
+        // checking if corner/side (index/out of bounds error)
         switch(index % 8){
             case 0:
                 spaces[0] = 0;
@@ -93,6 +122,8 @@ public class Minesweeper implements Game{
             spaces[6] = 0;
             spaces[7] = 0;
         }
+        
+        // checks each nearby cell for mines
         for(int i = 0; i < 8; i++){
             if(spaces[i] != 0){
                 if(getArrayIndex(mines,(index +  near[i])) != -1){
@@ -103,10 +134,11 @@ public class Minesweeper implements Game{
         return num;
     }
     
-    private void clear(Boolean[] board, int index){
+    private void clear(int index){
         int[] spaces = {1,2,3,4,5,6,7,8};
         int[] near = {-9,-8,-7,-1,1,7,8,9};
         int num = 0;
+        // checking if corner/side (index/out of bounds error)
         switch(index % 8){
             case 0:
                 spaces[0] = 0;
@@ -131,29 +163,31 @@ public class Minesweeper implements Game{
             spaces[7] = 0;
         }
         
-        if(check(board, index) == 0){
+        // if clear (not mines surronding) clear surrondings
+        if(check(index) == 0){
             for(int i = 0; i < 10; i++){
                 if(spaces[i] != 0){
-                    clear(board, index + near[i]);
+                    clear(index + near[i]);
                 }
             }
             board[index] = true;
         } else if(getArrayIndex(mines, index) == -1){
+            // just a number, gets shown
             board[index] = true;
         }
     }
     
-    private void print(Boolean[] board){
+    private void print(){
         System.out.println("\n     ---------------------------------");
         for(int i = 0; i < 8; i++){
             System.out.print(" " + (8-i) + "   |");
             for(int j = 0; j < 8; j++){
                 if(board[j] == null){
                     System.out.print(" # |");
-                } else if(!board[j]){
+                } else if(!board[(8*i) + j]){
                     System.out.print(" ! |");
-                } else if(board[j]){
-                    System.out.print(" " + check(board,j) + " |");
+                } else if(board[(8*i) + j]){
+                    System.out.print(" " + check((8*i) + j) + " |");
                 }
             }
             System.out.println("\n     ---------------------------------");
@@ -161,11 +195,31 @@ public class Minesweeper implements Game{
         System.out.println("\n       1   2   3   4   5   6   7   8");
     }
     
-    private void print(Boolean[] board, int row, int col){
-        
+    private void print(int row, int col){
+        System.out.println("\n     ---------------------------------");
+        for(int i = 0; i < 8; i++){
+            if((8 - i) == row) System.out.print(" " + (8-i) + " > |");
+            else System.out.print(" " + (8-i) + "   |");
+            for(int j = 0; j < 8; j++){
+                if(board[j] == null){
+                    System.out.print(" # |");
+                } else if(!board[(8*i) + j]){
+                    System.out.print(" ! |");
+                } else if(board[(8*i) + j]){
+                    System.out.print(" " + check((8*i) + j) + " |");
+                }
+            }
+            System.out.println("\n     ---------------------------------");
+        }
+        System.out.print("\n       ");
+        for(int i = 0; i < 8; i++){
+            if(i == (col - 1)) System.out.print("^   ");
+            else System.out.print("    ");
+        }
+        System.out.println("\n       1   2   3   4   5   6   7   8");
     }
     
-    private void printMines(Boolean[] board, int[] mines){
+    private void printMines(){
         System.out.println("\n     ---------------------------------");
         for(int i = 0; i < 8; i++){
             System.out.print(" " + (8-i) + "   |");
@@ -173,7 +227,7 @@ public class Minesweeper implements Game{
                 if(getArrayIndex(mines,((8*i) + j)) != -1){
                     System.out.print(" X |");
                 } else {
-                    System.out.print(" " + check(board, ((8*i) + j)) + " |");
+                    System.out.print(" " + check(((8*i) + j)) + " |");
                 }
             }
             System.out.println("\n     ---------------------------------");
