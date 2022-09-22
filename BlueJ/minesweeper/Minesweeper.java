@@ -73,6 +73,7 @@ public class Minesweeper implements Game{
                     System.out.println("Place flag at (" + col + ", " + row + ")?");
                     System.out.println("Yes: 1");
                     System.out.println("No: 2");
+                    System.out.println((8*(8-row)) + (col-1));
                     num2 = scan.nextInt();
                 }
                 if(num2 == 1){
@@ -83,43 +84,56 @@ public class Minesweeper implements Game{
             }
             
             num2 = (8*(8-row)) + (col-1);
+            // if digging
+            // 0 1 2
+            // 3 4 5
+            // 6 7 8
             if(num == 1){
                 // init mines, makes sure mines != first choice/near
                 if(first){
                     near = new int[] {-9,-8,-7,-1,0,1,7,8,9};
                     switch(num2 % 8){
                         case 0:
-                            near[0] = 0;
-                            near[3] = 0;
-                            near[5] = 0;
+                            near[0] = -1;
+                            near[3] = -1;
+                            near[6] = -1;
                             break;
                         case 7:
-                            near[2] = 0;
-                            near[4] = 0;
-                            near[7] = 0;
+                            near[2] = -1;
+                            near[5] = -1;
+                            near[8] = -1;
                             break;
                         default:
                             break;
                     }
                     if(num2 < 8){
-                        near[0] = 0;
-                        near[1] = 0;
-                        near[2] = 0;
+                        near[0] = -1;
+                        near[1] = -1;
+                        near[2] = -1;
                     } else if(num2 > 55){
-                        near[5] = 0;
-                        near[6] = 0;
-                        near[7] = 0;
+                        near[6] = -1;
+                        near[7] = -1;
+                        near[8] = -1;
                     }
+                    for(int i = 0; i < 9; i++){
+                        if(near[i] != -1)
+                            near[i] += num2;
+                        System.out.println(near[i]);
+                        System.out.println("check");
+                        scan.nextLine();
+                    }
+                    num = 0;
                     for(int i = 0; i < 10; i++){
                         while(!next){
-                            if(getArrayIndex(near, mines[i]) == -1){
+                            num = (int)(63*Math.random());
+                            if(getArrayIndex(near, mines[i]) == -1 && getArrayIndex(mines,num) == -1){
                                 next = true;
                             }
-                        num = (int)(63*Math.random());
                         }
                         mines[i] = num;
                     }
                     first = false;
+                    scan.nextLine();
                 }
                 
                 // lose if dig mine
@@ -129,15 +143,16 @@ public class Minesweeper implements Game{
                     System.out.println("\n You Lost!");
                     break;
                 } else {
-                    clear(8*(8-row) + (col-1));
+                    clear(num2);
                 }
-                
+             
             } else {
+                // flag
                 if(board[num2] == null){
                     board[num2] = false;
                 } else if(board[num2] == false){
                     board[num2] = null;
-                } else {
+                } else if(board[num2] == true){
                     System.out.println("You can't place a flag here!");
                     scan.nextLine();
                 }
@@ -152,7 +167,7 @@ public class Minesweeper implements Game{
             if(num2 == 10){
                 win = true;
             }
-        }
+        } 
     }
     
     private int check(int index){
