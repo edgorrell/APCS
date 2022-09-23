@@ -116,12 +116,12 @@ public class Minesweeper implements Game{
                         near[8] = -1;
                     }
                     for(int i = 0; i < 9; i++){
-                        if(near[i] != -1)
+                        if(near[i] != -1){
                             near[i] += num2;
-                        System.out.println(near[i]);
-                        System.out.println("check");
-                        scan.nextLine();
+                        }
+                        System.out.print(near[i] + " ");
                     }
+                    scan.nextLine();
                     num = 0;
                     for(int i = 0; i < 10; i++){
                         while(!next){
@@ -214,7 +214,6 @@ public class Minesweeper implements Game{
     }
     
     private void clear(int index){
-        int[] spaces = {1,2,3,4,5,6,7,8};
         int[] near = {-9,-8,-7,-1,1,7,8,9};
         int num = 0;
         // 0 1 2
@@ -223,32 +222,34 @@ public class Minesweeper implements Game{
         // checking if corner/side (index/out of bounds error)
         switch(index % 8){
             case 0:
-                spaces[0] = 0;
-                spaces[3] = 0;
-                spaces[5] = 0;
+                near[0] = 0;
+                near[3] = 0;
+                near[5] = 0;
                 break;
             case 7:
-                spaces[2] = 0;
-                spaces[4] = 0;
-                spaces[7] = 0;
+                near[2] = 0;
+                near[4] = 0;
+                near[7] = 0;
                 break;
             default:
                 break;
         }
         if(index < 8){
-            spaces[0] = 0;
-            spaces[1] = 0;
-            spaces[2] = 0;
+            near[0] = 0;
+            near[1] = 0;
+            near[2] = 0;
         } else if(index > 55){
-            spaces[5] = 0;
-            spaces[6] = 0;
-            spaces[7] = 0;
+            near[5] = 0;
+            near[6] = 0;
+            near[7] = 0;
         }
         
         // if clear (no mines surrounding) clear near
         if(check(index) == 0){
-            for(int i = 0; i < 8; i++){             
-                clear(index + near[i]);
+            for(int i = 0; i < 8; i++){
+                if(near[i] != 0 && board[index + near[i]] != true){
+                    clear(index + near[i]);
+                }
             }
             board[index] = true;
         } else if(getArrayIndex(mines, index) == -1){
