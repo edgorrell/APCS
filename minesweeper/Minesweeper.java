@@ -19,8 +19,8 @@ public class Minesweeper implements Game{
         }
 
         while(!win){
-            next = false;
             
+            next = false;
             while(!next){
                 num = 0;
                 num2 = 0;
@@ -91,45 +91,13 @@ public class Minesweeper implements Game{
                 // 3 4 5
                 // 6 7 8
                 if(first){
-                    near = new int[] {-9,-8,-7,-1,0,1,7,8,9};
-                    switch(num2 % 8){
-                        case 0:
-                            near[0] = 2;
-                            near[3] = 2;
-                            near[6] = 2;
-                            break;
-                        case 7:
-                            near[2] = 2;
-                            near[5] = 2;
-                            near[8] = 2;
-                            break;
-                        default:
-                            break;
-                    }
-                    if(num2 < 8){
-                        near[0] = 2;
-                        near[1] = 2;
-                        near[2] = 2;
-                    } else if(num2 > 55){
-                        near[6] = 2;
-                        near[7] = 2;
-                        near[8] = 2;
-                    }
-                    for(int i = 0; i < 9; i++){
-                        if(near[i] != 2){
-                            near[i] += num2;
-                        } else {
-                            near[i] = -1;
-                        }
-                    }
-                    
+                    int[] near = nearSpaces(num2);
                     num = 0;
                     for(int i = 0; i < 10; i++){
                         next = false;
                         while(!next){
                             num = (int)(63.0*Math.random());
-                            if(getArrayIndex(near, mines[i]) == -1
-                               && getArrayIndex(mines,num) == -1){
+                            if(getArrayIndex(near, mines[i]) == -1 && getArrayIndex(mines,num) == -1){
                                 System.out.println(num);
                                 scan.nextLine();
                                 mines[i] = num;
@@ -142,7 +110,7 @@ public class Minesweeper implements Game{
                 }
                 
                 // lose if dig mine
-                if(getArrayIndex(mines, 8*(8-row) + (col -1)) != -1){
+                if(getArrayIndex(mines, num2) != -1){
                     Main.clear();
                     printMines();
                     System.out.println("\n You Lost!");
@@ -179,38 +147,13 @@ public class Minesweeper implements Game{
         // 1 2 3
         // 4 x 5
         // 6 7 8
-        int[] spaces = {1,2,3,4,5,6,7,8};
-        int[] near = {-9,-8,-7,-1,1,7,8,9};
+        int[] near = nearSpaces(index);
         int num = 0;
-        // checking if corner/side (index/out of bounds error)
-        switch(index % 8){
-            case 0:
-                spaces[0] = 0;
-                spaces[3] = 0;
-                spaces[5] = 0;
-                break;
-            case 7:
-                spaces[2] = 0;
-                spaces[4] = 0;
-                spaces[7] = 0;
-                break;
-            default:
-                break;
-        }
-        if(index < 8){
-            spaces[0] = 0;
-            spaces[1] = 0;
-            spaces[2] = 0;
-        } else if(index > 55){
-            spaces[5] = 0;
-            spaces[6] = 0;
-            spaces[7] = 0;
-        }
         
         // checks each nearby cell for mines
         for(int i = 0; i < 8; i++){
-            if(spaces[i] != 0){
-                if(getArrayIndex(mines,(index +  near[i])) != -1){
+            if(near[i] != -1){
+                if(getArrayIndex(mines,near[i]) != -1){
                     num++;
                 }
             }
@@ -219,45 +162,57 @@ public class Minesweeper implements Game{
     }
     
     private void clear(int index){
-        int[] near = {-9,-8,-7,-1,1,7,8,9};
-        int num = 0;
+        int[] near = nearSpaces(index);
+        int num = check(index);
+        
+        // if clear (no mines surrounding) clear near
+        if(num == 0){
+            for(int i = 0; i < 8; i++){
+                if(board[index] == null && near[i] != -1){
+                    clear(near[i]);
+                }
+            }
+        }
+        board[index] = true;
+    }
+    
+    private int[] nearSpaces(int index){
         // 0 1 2
         // 3 X 4
         // 5 6 7
         // checking if corner/side (index/out of bounds error)
+        int[] near = {-9,-8,-7,-1,1,7,8,9};
         switch(index % 8){
             case 0:
-                near[0] = 0;
-                near[3] = 0;
-                near[5] = 0;
+                near[0] = -2;
+                near[3] = -2;
+                near[5] = -2;
                 break;
             case 7:
-                near[2] = 0;
-                near[4] = 0;
-                near[7] = 0;
+                near[2] = -2;
+                near[4] = -2;
+                near[7] = -2;
                 break;
             default:
                 break;
         }
         if(index < 8){
-            near[0] = 0;
-            near[1] = 0;
-            near[2] = 0;
+            near[0] = -2;
+            near[1] = -2;
+            near[2] = -2;
         } else if(index > 55){
-            near[5] = 0;
-            near[6] = 0;
-            near[7] = 0;
+            near[5] = -2;
+            near[6] = -2;
+            near[7] = -2;
         }
-        
-        // if clear (no mines surrounding) clear near
-        if(getArrayIndex(mines, index) != -1){
-            for(int i = 0; i < 8; i++){
-                if(near[i] != 0 && (board[near[i] + index] == null || board[near[i] + index] == false)){
-                    clear(near[i] + index);
-                }
+        for(int i = 0; i < 8; i++){
+            if(near[i] != -2){
+                near[i] += index;
+            } else {
+                near[i] = -1;
             }
         }
-        board[index] = true;
+        return near;
     }
     
     private void print(){
