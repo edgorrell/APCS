@@ -79,8 +79,6 @@ public class Minesweeper implements Game{
                 }
             }
             
-            System.out.println("buh");
-            scan.nextLine();
             num2 = (8*(8-row)) + (col-1);
             // if digging
             if(num == 1){
@@ -88,6 +86,7 @@ public class Minesweeper implements Game{
                 // 0 1 2
                 // 3 4 5
                 // 6 7 8
+                // stuck here?
                 if(first){
                     int[] near = nearSpaces(num2);
                     num = 0;
@@ -95,7 +94,8 @@ public class Minesweeper implements Game{
                         next = false;
                         num = (int)(63 * Math.random()); 
                         while(!next){
-                            if(getArrayIndex(mines, num) == 0 && num2 != num2){
+                            if(getArrayIndex(mines, num) == -1 && 
+                                getArrayIndex(near, num) == -1&& num != num2){
                                 next = true;
                             } else {
                                 num = (int)(63 * Math.random());   
@@ -105,7 +105,7 @@ public class Minesweeper implements Game{
                     }
                     first = false;
                 }
-                
+
                 // lose if dig mine
                 if(getArrayIndex(mines, num2) != -1){
                     Main.clear();
@@ -160,17 +160,19 @@ public class Minesweeper implements Game{
     
     private void clear(int index){
         int[] near = nearSpaces(index);
-        int num = check(index);
-        
-        // if clear (no mines surrounding) clear near
-        if(num == 0){
+        Scanner scan = new Scanner(System.in);
+        if(check(index) == 0){
             for(int i = 0; i < 8; i++){
-                if(board[index] == null && near[i] != -1){
+                if(near[i] != -1 && board[near[i]] == null){
+                    Main.clear();
+                    print();
+                    System.out.println(near[i]);
+                    scan.nextLine();
                     clear(near[i]);
                 }
             }
+            board[index] = true;
         }
-        board[index] = true;
     }
     
     private int[] nearSpaces(int index){
