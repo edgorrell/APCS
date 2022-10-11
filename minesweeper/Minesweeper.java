@@ -165,16 +165,14 @@ public class Minesweeper implements Game{
     
     private void clear(int index){
         int[] near = nearSpaces(index);
-        Scanner scan = new Scanner(System.in);
+        
+        board[index] = true;
         if(check(index) == 0){
-            board[index] = true;
             for(int i = 0; i < 8; i++){
                 if(near[i] != -1 && board[near[i]] == null){
                     clear(near[i]);
                 }
             }
-        } else {
-            board[index] = true;
         }
     }
     
