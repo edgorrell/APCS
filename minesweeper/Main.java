@@ -3,10 +3,15 @@ import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
+        Game game;
         
-        clear();
-        Game game = new Minesweeper();
-        game.run(scan);
+        final String[] GAMES = {
+            "Minesweeper", "TicTacToe"
+        };
+        int choice = -1;
+        for(int i = 0; i < GAMES.length(); i++){
+            System.out.println();
+        }
     }
     
     public static void clear(){

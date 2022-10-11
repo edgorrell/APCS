@@ -39,7 +39,7 @@ public class Minesweeper implements Game{
                 // square to preform action
                 row = -1;
                 col = -1;
-                while(row < 0 || row > 9){
+                while(row <= 0 || row >= 9){
                     Main.clear();
                     print();
                     if(num == 1){
@@ -49,7 +49,7 @@ public class Minesweeper implements Game{
                     }
                     row = scan.nextInt();
                 }
-                while(col < 0 || col > 9){
+                while(col <= 0 || col >= 9){
                     Main.clear();
                     print(row, 0);
                     if(num == 1){
