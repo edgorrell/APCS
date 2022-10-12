@@ -1,6 +1,11 @@
 import java.util.Scanner;
 
 public class TicTacToe implements Game{
+    public String[] init(Scanner scan){
+        String[] cons = new String[0];
+        return cons;
+    }
+    
     public void run(Scanner scan){
         int play;
         Boolean[] board = new Boolean[9];

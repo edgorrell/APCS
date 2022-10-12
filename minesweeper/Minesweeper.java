@@ -11,9 +11,16 @@ public class Minesweeper implements Game{
     Boolean next = false;
     int row, col, flags = 10, num, num2;
     boolean win = false,first = true;
+    public String[] init(Scanner scan){
+        String[] cons = new String[3];
+        System.out.println("yee");
+        scan.nextLine();
+        return cons;
+    }
     
     public void run(Scanner scan){
         // init board
+        init(scan);
         for(int i = 0; i < 64; i++){
             board[i] = null;
         }
@@ -143,9 +150,11 @@ public class Minesweeper implements Game{
                 System.out.println("You Win!");
             }
         }
+        System.out.println("Press Enter to Exit:");
+        scan.nextLine();
     }
     
-    private int check(int index){
+    private int check(Boolean[] board, int[] mines, int index){
         // 1 2 3
         // 4 x 5
         // 6 7 8
@@ -163,20 +172,20 @@ public class Minesweeper implements Game{
         return num;
     }
     
-    private void clear(int index){
-        int[] near = nearSpaces(index);
+    private void clear(Boolean[] board, int[] mines, int index){
+        int[] near = nearSpaces(board, mines, index);
         
         board[index] = true;
-        if(check(index) == 0){
+        if(check(board, mines, index) == 0){
             for(int i = 0; i < 8; i++){
                 if(near[i] != -1 && board[near[i]] == null){
-                    clear(near[i]);
+                    clear(board, mines, near[i]);
                 }
             }
         }
     }
     
-    private int[] nearSpaces(int index){
+    private int[] nearSpaces(Boolean[] board, int[] mines, int index){
         // 0 1 2
         // 3 X 4
         // 5 6 7
@@ -215,7 +224,7 @@ public class Minesweeper implements Game{
         return near;
     }
     
-    private void print(){
+    private void print(Boolean[] board, int[] mines){
         System.out.println("Flags: " + flags);
         System.out.println("\n     ---------------------------------");
         for(int i = 0; i < 8; i++){
@@ -226,10 +235,10 @@ public class Minesweeper implements Game{
                 } else if(board[(8*i) + j] == false){
                     System.out.print(" ! |");
                 } else if(board[(8*i) + j] == true){
-                    if(check((8*i) + j) == 0){
+                    if(check(board, mines, ((8*i) + j)) == 0){
                         System.out.print("   |");
                     } else {    
-                        System.out.print(" " + check((8*i) + j) + " |");
+                        System.out.print(" " + check(board, mines, ((8*i) + j)) + " |");
                     }
                 }
             }
@@ -238,7 +247,7 @@ public class Minesweeper implements Game{
         System.out.println("\n       1   2   3   4   5   6   7   8");
     }
     
-    private void print(int row, int col){
+    private void print(Boolean[] board, int[] mines, int row, int col){
         System.out.println("Flags: " + flags);
         System.out.println("\n     ---------------------------------");
         for(int i = 0; i < 8; i++){
@@ -250,10 +259,10 @@ public class Minesweeper implements Game{
                 } else if(!board[(8*i) + j]){
                     System.out.print(" ! |");
                 } else if(board[(8*i) + j]){
-                    if(check((8*i) + j) == 0){
+                    if(check(board, mines, ((8*i) + j)) == 0){
                         System.out.print("   |");
                     } else {    
-                        System.out.print(" " + check((8*i) + j) + " |");
+                        System.out.print(" " + check(board, mines, ((8*i) + j)) + " |");
                     }
                 }
             }
@@ -267,7 +276,7 @@ public class Minesweeper implements Game{
         System.out.println("\n       1   2   3   4   5   6   7   8");
     }
     
-    private void printMines(){
+    private void printMines(Boolean[] board, int[] mines){
         System.out.println("Flags: " + flags);
         System.out.println("\n     ---------------------------------");
         for(int i = 0; i < 8; i++){
@@ -276,7 +285,7 @@ public class Minesweeper implements Game{
                 if(getArrayIndex(mines,((8*i) + j)) != -1){
                     System.out.print(" X |");
                 } else {
-                    System.out.print(" " + check(((8*i) + j)) + " |");
+                    System.out.print(" " + check(board, mines, ((8*i) + j)) + " |");
                 }
             }
             System.out.println("\n     ---------------------------------");

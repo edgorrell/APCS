@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
 public interface Game{
-    public void run(Scanner scan);
+    public abstract String[] init(Scanner scan);
+    public abstract void run(Scanner scan);
 }
