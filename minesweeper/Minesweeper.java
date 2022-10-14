@@ -32,7 +32,7 @@ public class Minesweeper implements Game{
                 // determine to dig or flag
                 while(!(num == 1 || num == 2)){
                     Main.clear();
-                    print();
+                    print(board, mines);
                     System.out.println("\nChoose an option:");
                     System.out.println("  Dig a square: 1");
                     System.out.println("  Place a flag: 2");
@@ -48,7 +48,7 @@ public class Minesweeper implements Game{
                 col = -1;
                 while(row <= 0 || row >= 9){
                     Main.clear();
-                    print();
+                    print(board, mines);
                     if(num == 1){
                         System.out.println("\nRow of square to dig:\n> ");
                     } else {
@@ -58,7 +58,7 @@ public class Minesweeper implements Game{
                 }
                 while(col <= 0 || col >= 9){
                     Main.clear();
-                    print(row, 0);
+                    print(board, mines, row, 0);
                     if(num == 1){
                         System.out.println("\nColumn of square to dig:\n> ");
                     }else {
@@ -71,7 +71,7 @@ public class Minesweeper implements Game{
                 // confirmation of action
                 while(!(num2 == 1 || num2 == 2)){
                     Main.clear();
-                    print(row ,col);
+                    print(board, mines, row ,col);
                     if(num == 1){
                         System.out.println("\nDig at (" + col + ", " + row + ")?");
                     } else{
@@ -95,7 +95,7 @@ public class Minesweeper implements Game{
                 // 6 7 8
                 // stuck here?
                 if(first){
-                    int[] near = nearSpaces(num2);
+                    int[] near = nearSpaces(board, mines, num2);
                     num = 0;
                     for(int i = 0; i < 10; i++){
                         next = false;
@@ -116,11 +116,11 @@ public class Minesweeper implements Game{
                 // lose if dig mine
                 if(getArrayIndex(mines, num2) != -1){
                     Main.clear();
-                    printMines();
+                    printMines(board, mines);
                     System.out.println("\n You Lost!");
                     break;
                 } else if(board[num2] == null){
-                    clear(num2);
+                    clear(board, mines, num2);
                 }
              
             } else {
@@ -146,7 +146,7 @@ public class Minesweeper implements Game{
             if(num2 == 10){
                 win = true;
                 Main.clear();
-                print();
+                print(board, mines);
                 System.out.println("You Win!");
             }
         }
@@ -158,7 +158,7 @@ public class Minesweeper implements Game{
         // 1 2 3
         // 4 x 5
         // 6 7 8
-        int[] near = nearSpaces(index);
+        int[] near = nearSpaces(board, mines, index);
         int num = 0;
         
         // checks each nearby cell for mines
