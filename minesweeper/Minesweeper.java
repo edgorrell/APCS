@@ -152,6 +152,7 @@ public class Minesweeper implements Game{
         }
         System.out.println("Press Enter to Exit:");
         scan.nextLine();
+        scan.nextLine();
     }
     
     private int check(Boolean[] board, int[] mines, int index){
