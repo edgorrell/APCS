@@ -1,13 +1,11 @@
 #BlueJ class context
 comment0.target=TicTacToe
 comment1.params=scan
-comment1.target=java.lang.String[]\ init(java.util.Scanner)
-comment2.params=scan
-comment2.target=void\ run(java.util.Scanner)
-comment3.params=board
-comment3.target=boolean\ check(java.lang.Boolean[])
-comment4.params=
-comment4.target=void\ print()
-comment5.params=board
-comment5.target=void\ print(java.lang.Boolean[])
-numComments=6
+comment1.target=void\ run(java.util.Scanner)
+comment2.params=board
+comment2.target=boolean\ check(java.lang.Boolean[])
+comment3.params=
+comment3.target=void\ print()
+comment4.params=board
+comment4.target=void\ print(java.lang.Boolean[])
+numComments=5
