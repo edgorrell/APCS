@@ -1,3 +1,5 @@
+package minesweeper;
+
 import java.util.Scanner;
 
 public class Main{
@@ -20,6 +22,7 @@ public class Main{
                 choice = scan.nextInt();
             }
             
+            if(choice == -1){ System.exit(0); }
             game = null;
             switch(choice){
                 case 1:

@@ -1,3 +1,5 @@
+package pow_of_2_test;
+
 import java.util.Scanner;
 
 public class PowOfTwo{
