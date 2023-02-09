@@ -1,7 +1,7 @@
 #BlueJ class context
-comment0.target=Test
+comment0.target=Box
 comment1.params=
-comment1.target=Test()
+comment1.target=Box()
 comment2.params=frame
 comment2.target=void\ draw(java.awt.Graphics2D)
 comment3.params=

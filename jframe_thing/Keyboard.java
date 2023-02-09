@@ -9,24 +9,39 @@ import java.awt.image.*;
 import java.awt.event.*;
 
 public class Keyboard{
-    public static ArrayList<Character> keysPressed;
-    public static Character lastKey;
+    public static ArrayList<String> keysPressed;
+    public static String keyStart = "keyText=";
+    public static String unicodeStart = "primaryLevelUnicode=";
     public Keyboard(JFrame frame){
-        keysPressed = new ArrayList<Character>();
+        keysPressed = new ArrayList<String>();
         frame.addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent e){
-                char c = e.getKeyChar();
-                int num = e.getKeyCode();
-                if(keysPressed.contains(c)){ return; }
-                keysPressed.add(c);
-                lastKey = c;
-                System.out.println(keysPressed);
+                if(keysPressed.contains(e.toString())){ return; }
+                keysPressed.add(e.toString());
             }
             public void keyReleased(KeyEvent e){
-                char c = e.getKeyChar();
-                int num = e.getKeyCode();
-                keysPressed.remove(keysPressed.indexOf(c));
+                String event = e.toString();
+                int id1 = event.indexOf(unicodeStart)+unicodeStart.length();
+                String unicode = event.substring(id1,event.indexOf(",",id1));
+                for(String str : keysPressed){
+                    if(str.contains(unicodeStart + unicode)){
+                        keysPressed.remove(str);
+                        return;
+                    }
+                }
+            }
+            public void keyTyped(KeyEvent e){
+                
             }
         });
+    }
+    public String getUnicode(char c){
+        return String.format("\\u%04x", (int) c);
+    }
+    public void printKeys(){
+        for(String str : keysPressed){
+            System.out.println(str);
+        }
+        System.out.println();
     }
 }

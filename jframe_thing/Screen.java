@@ -12,16 +12,18 @@ public class Screen extends JComponent{
     Thread t1;
     
     //declare objects
-    Test test;
+    Box box;
     public Screen() throws IOException{
-        this.test = new Test();
+        this.box = new Box();
         
-        this.t1 = new Thread(test);
+        this.t1 = new Thread(box);
+        
+        t1.start();
     }
     public void paintComponent(Graphics g){
         Graphics2D frame = (Graphics2D) g;
         
-        this.test.draw(frame);
+        this.box.draw(frame);
     }
     public void nextFrame(){
         repaint();
