@@ -8,9 +8,10 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.awt.event.*;
 
-public class Viewer{
-    static Keyboard keyboard;
+public class Window{
+    static EventHandler eventHandler;
     static JFrame frame;
+    static boolean isFocused;
     public static void main(String[] args) throws InterruptedException, IOException{
         JFrame frame = new JFrame();
         frame.setSize(528, 423);
@@ -22,7 +23,7 @@ public class Viewer{
 
         Screen screen = new Screen();
         frame.add(screen);
-        keyboard = new Keyboard(frame);
+        eventHandler = new EventHandler(frame);
         
         while(true){
             screen.nextFrame();

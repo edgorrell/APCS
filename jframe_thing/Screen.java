@@ -14,7 +14,7 @@ public class Screen extends JComponent{
     //declare objects
     Box box;
     public Screen() throws IOException{
-        this.box = new Box();
+        this.box = new Box(new Color(100,100,100),100,100,50,50);
         
         this.t1 = new Thread(box);
         
