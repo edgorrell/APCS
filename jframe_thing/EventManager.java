@@ -16,10 +16,12 @@ public class EventManager{
     public EventManager(JFrame frame){
         keysPressed = new ArrayList<String>();
         frame.addKeyListener(new KeyAdapter(){
+            @Override
             public void keyPressed(KeyEvent e){
                 if(keysPressed.contains(e.toString())){ return; }
                 keysPressed.add(e.toString());
             }
+            @Override
             public void keyReleased(KeyEvent e){
                 String event = e.toString();
                 int id1 = event.indexOf(unicodeStart)+unicodeStart.length();
@@ -31,16 +33,19 @@ public class EventManager{
                     }
                 }
             }
+            @Override
             public void keyTyped(KeyEvent e){
 
             }
         });
         
         frame.addWindowListener(new WindowAdapter(){
+            @Override
             public void windowGainedFocus(WindowEvent e){
                 Window.isFocused = true;
                 System.out.println(true);
             }
+            @Override
             public void windowLostFocus(WindowEvent e){
                 Window.isFocused = false;
                 keysPressed.clear();
@@ -50,7 +55,7 @@ public class EventManager{
     }
 
     public String getUnicode(char c){
-        return String.format("\\u%04x", (int) c);
+        return String.format("\\u%04x", (int) c); 
     }
 
     public void printKeys(){

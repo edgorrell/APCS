@@ -9,7 +9,7 @@ import java.awt.image.*;
 import java.awt.event.*;
 
 public class Window{
-    static EventHandler eventHandler;
+    static EventManager eventHandler;
     static JFrame frame;
     static boolean isFocused;
     public static void main(String[] args) throws InterruptedException, IOException{
@@ -23,7 +23,9 @@ public class Window{
 
         Screen screen = new Screen();
         frame.add(screen);
-        eventHandler = new EventHandler(frame);
+        eventHandler = new EventManager(frame);
+        
+        Window.isFocused = true;
         
         while(true){
             screen.nextFrame();

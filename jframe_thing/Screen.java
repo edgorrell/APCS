@@ -21,6 +21,9 @@ public class Screen extends JComponent{
         t1.start();
     }
     public void paintComponent(Graphics g){
+        if(!Window.isFocused){
+            return;
+        }
         Graphics2D frame = (Graphics2D) g;
         
         this.box.draw(frame);

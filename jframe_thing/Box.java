@@ -34,26 +34,26 @@ public class Box extends JComponent implements Runnable{
     public void run(){
         while(true){
             try{
-                Window.keysPressed.get(0);
+                EventManager.keysPressed.get(0);
                 break;
             } catch(Exception e){}
         }
         while(true){
-            ArrayList<String> keysPressed = new ArrayList<String>(keysPressed);
+            ArrayList<String> keysPressed = new ArrayList<String>(EventManager.keysPressed);
             for(String key : keysPressed){
-                if(key.contains(Keyboard.keyStart + "A")){
+                if(key.contains(EventManager.keyStart + "A")){
                     this.x--;
                     continue;
                 }
-                if(key.contains(Keyboard.keyStart + "D")){
+                if(key.contains(EventManager.keyStart + "D")){
                     this.x++;
                     continue;
                 }
-                if(key.contains(Keyboard.keyStart + "W")){
+                if(key.contains(EventManager.keyStart + "W")){
                     this.y--;
                     continue;
                 }
-                if(key.contains(Keyboard.keyStart + "S")){
+                if(key.contains(EventManager.keyStart + "S")){
                     this.y++;
                     continue;
                 }
