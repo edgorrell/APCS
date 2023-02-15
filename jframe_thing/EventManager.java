@@ -38,7 +38,6 @@ public class EventManager{
 
             }
         });
-        
         frame.addWindowListener(new WindowAdapter(){
             @Override
             public void windowGainedFocus(WindowEvent e){
@@ -50,6 +49,12 @@ public class EventManager{
                 Window.isFocused = false;
                 keysPressed.clear();
                 System.out.println(false);
+            }
+        });
+        frame.addComponentListener(new ComponentAdapter(){
+            public void componentResized(ComponentEvent e){
+                Window.width = frame.getWidth();
+                Window.height = frame.getHeight();
             }
         });
     }

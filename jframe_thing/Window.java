@@ -9,9 +9,10 @@ import java.awt.image.*;
 import java.awt.event.*;
 
 public class Window{
-    static EventManager eventHandler;
-    static JFrame frame;
-    static boolean isFocused;
+    private static EventManager eventHandler;
+    public static JFrame frame;
+    public static int width, height;
+    public static boolean isFocused;
     public static void main(String[] args) throws InterruptedException, IOException{
         JFrame frame = new JFrame();
         frame.setSize(528, 423);
