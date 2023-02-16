@@ -10,17 +10,17 @@ import java.awt.event.*;
 
 public class Box extends JComponent implements Runnable{
     Point2D[] points;
-    Color color = new Color(100,100,100);
-    final double DAMPENING = 0.95;
+    Color color;
+    Box following = null;
+    double friction = 0.05;
     double x = 20, y = 20, w = 50, h = 50;
     double xv, yv, xres, yres;
+    int delay = 0, num = 2;
     public Box(Color color, double x, double y, double w, double h){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.xv = 0;
-        this.yv = 0;
+        this.color = color;
+        this.x = x; this.y = y;
+        this.w = w; this.h = h;
+        this.xv = 0; this.yv = 0;
         points = this.getPoints();
     }
     public Point2D[] getPoints(){
@@ -30,6 +30,10 @@ public class Box extends JComponent implements Runnable{
         this.points[2] = new Point2D(this.x - (this.w/2.0), this.y - (this.h/2.0));
         this.points[3] = new Point2D(this.x + (this.w/2.0), this.y - (this.h/2.0));
         return this.points;
+    }
+    public void follow(Box box, int delay){
+        this.following = box;
+        this.delay = delay;
     }
     public void draw(Graphics2D frame){
         frame.setColor(this.color);
@@ -47,8 +51,8 @@ public class Box extends JComponent implements Runnable{
         while(true){
             //move
             ArrayList<String> keysPressed = new ArrayList<String>(EventManager.keysPressed);
-            this.xres = Math.pow(this.xv/10,2); this.xres = 1 - this.xres;
-            this.yres = Math.pow(this.yv/10,2); this.yres = 1 - this.yres;
+            this.xres = Math.pow(this.xv/10,num); this.xres = 1 - this.xres;
+            this.yres = Math.pow(this.yv/10,num); this.yres = 1 - this.yres;
             for(String key : keysPressed){
                 if(key.contains(EventManager.keyStart + "A")){
                     this.xv -= 1 * this.xres;
@@ -81,8 +85,8 @@ public class Box extends JComponent implements Runnable{
             }
             this.x += this.xv;
             this.y += this.yv;
-            this.xv *= this.DAMPENING;
-            this.yv *= this.DAMPENING;
+            this.xv *= 1 - this.friction;
+            this.yv *= 1 - this.friction;
             //collision
             
             //~30fps

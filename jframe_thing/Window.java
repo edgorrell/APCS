@@ -30,7 +30,6 @@ public class Window{
         
         while(true){
             screen.nextFrame();
-            Thread.sleep(17); // approx 30fps
         }
     }
 }
