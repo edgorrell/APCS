@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=GameObject
+comment1.params=
+comment1.target=Point2D[]\ getPoints()
+comment2.params=obj
+comment2.target=boolean\ collidesWith(GameObject)
+numComments=3
