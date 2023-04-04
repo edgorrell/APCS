@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=PatternGenerator
+comment1.params=base
+comment1.target=java.lang.String[][]\ horizontalSymmetric(java.lang.String[][])
+comment2.params=base
+comment2.target=java.lang.String[][]\ verticalSymmetric(java.lang.String[][])
+comment3.params=base
+comment3.target=java.lang.String[][]\ twoWaySymmetric(java.lang.String[][])
+comment4.params=base\ vReps\ hReps
+comment4.target=java.lang.String[][]\ fullSymmetric(java.lang.String[][],\ int,\ int)
+comment5.params=pattern
+comment5.target=void\ printPattern(java.lang.String[][])
+numComments=6
