@@ -9,6 +9,6 @@ import java.awt.image.*;
 import java.awt.event.*;
 
 public interface GameObject{
-    public Point2D[] getPoints();
+    public Point[] getPoints();
     public boolean collidesWith(GameObject obj);
 }

@@ -1,11 +1,11 @@
 #BlueJ class context
-comment0.target=Point2D
+comment0.target=Point
 comment1.params=
-comment1.target=Point2D()
+comment1.target=Point()
 comment2.params=x\ y
-comment2.target=Point2D(double,\ double)
+comment2.target=Point(double,\ double)
 comment3.params=point
-comment3.target=Point2D(Point2D)
+comment3.target=Point(Point)
 comment4.params=
 comment4.target=double\ getX()
 comment5.params=
@@ -13,7 +13,7 @@ comment5.target=double\ getY()
 comment6.params=dx\ dy
 comment6.target=void\ translate(double,\ double)
 comment7.params=point
-comment7.target=double\ distance(Point2D)
+comment7.target=double\ distance(Point)
 comment8.params=obj
 comment8.target=boolean\ equals(java.lang.Object)
 comment9.params=

@@ -33,7 +33,6 @@ public class Screen extends JComponent{
         frame.drawLine(300,0,300,500);
     }
     public void nextFrame(){
-        if(p1.collidesWith(box)){ System.out.println(Math.random()); }
         repaint();
     }
 }

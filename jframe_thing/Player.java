@@ -9,9 +9,8 @@ import java.awt.image.*;
 import java.awt.event.*;
 
 public class Player extends JComponent implements Runnable, GameObject{
-    Point2D[] points;
+    Point[] points;
     Color color;
-    GameObject following = null;
     double friction = 0.15;
     double x = 20, y = 20, w = 50, h = 50;
     double xv, yv, xres, yres;
@@ -23,31 +22,30 @@ public class Player extends JComponent implements Runnable, GameObject{
         this.xv = 0; this.yv = 0;
         points = this.getPoints();
     }
-    public Point2D[] getPoints(){
-        this.points = new Point2D[4];
-        this.points[0] = new Point2D(this.x + (this.w/2.0), this.y + (this.h/2.0));
-        this.points[1] = new Point2D(this.x - (this.w/2.0), this.y + (this.h/2.0));
-        this.points[2] = new Point2D(this.x - (this.w/2.0), this.y - (this.h/2.0));
-        this.points[3] = new Point2D(this.x + (this.w/2.0), this.y - (this.h/2.0));
+    public Point[] getPoints(){
+        this.points = new Point[4];
+        this.points[0] = new Point(this.x + (this.w/2.0), this.y + (this.h/2.0));
+        this.points[1] = new Point(this.x - (this.w/2.0), this.y + (this.h/2.0));
+        this.points[2] = new Point(this.x - (this.w/2.0), this.y - (this.h/2.0));
+        this.points[3] = new Point(this.x + (this.w/2.0), this.y - (this.h/2.0));
         return this.points;
-    }
-    public void follow(GameObject obj, int delay){
-        this.following = obj;
-        this.delay = delay;
     }
     public void draw(Graphics2D frame){
         frame.setColor(this.color);
         frame.fillRect((int)(this.x),(int)(this.y),(int)(this.w),(int)(this.h));
     }
     public boolean collidesWith(GameObject obj){
-        Point2D[] points = obj.getPoints();
-        for(Point2D point : points){
+        Point[] points = obj.getPoints();
+        for(Point point : points){
             if(point.getX() > this.x && point.getX() < this.x + this.w &&
                point.getY() > this.y && point.getY() < this.y + this.h){
                 return true;
             }
         }
         return false;
+    }
+    public double dampen(double res){
+        return Math.pow(Math.abs(res/10),1);
     }
     public void run(){
         while(true){
@@ -59,8 +57,8 @@ public class Player extends JComponent implements Runnable, GameObject{
         while(true){
             //move
             ArrayList<String> keysPressed = new ArrayList<String>(EventManager.keysPressed);
-            this.xres = Math.pow(Math.abs(this.xv/10),10); this.xres = 1 - this.xres;
-            this.yres = Math.pow(Math.abs(this.yv/10),10); this.yres = 1 - this.yres;
+            this.xres = dampen(xres); this.xres = 1 - this.xres;
+            this.yres = dampen(yres); this.yres = 1 - this.yres;
             for(String key : keysPressed){
                 if(key.contains(EventManager.keyStart + "A")){
                     this.xv -= 1 * this.xres;

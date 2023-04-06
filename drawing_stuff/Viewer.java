@@ -1,27 +1,23 @@
 package drawing_stuff;
 
-
 import java.io.*;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import javax.imageio.*;
 import java.awt.image.*;
-import java.awt.event.*;
 
 public class Viewer{
-    public static JFrame frame;
-    public static int width, height;
-    
-    public static void main(String[] args) throws InterruptedException, IOException{
+    public static void main(String[] args) throws InterruptedException{
+        int size = 800;
         JFrame frame = new JFrame();
-        frame.setSize(512,512);
-        frame.setTitle("Screen");
-        frame.setBackground(Color.black);
+        frame.setSize(size,size);
+        frame.setTitle("yes");
+        frame.setBackground(Color.BLACK);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
-        Screen screen = new Screen();
+        
+        Screen screen = new Screen(size);
         frame.add(screen);
         
         while(true){

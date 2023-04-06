@@ -1,9 +1,0 @@
-#BlueJ class context
-comment0.target=Pen
-comment1.params=size\ radius
-comment1.target=Pen(int,\ int)
-comment2.params=frame
-comment2.target=void\ draw(java.awt.Graphics2D)
-comment3.params=h\ s\ v
-comment3.target=java.awt.Color\ toRGB(double,\ double,\ double)
-numComments=4
