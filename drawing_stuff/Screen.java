@@ -9,24 +9,25 @@ import java.awt.image.*;
 
 public class Screen extends JComponent{
     public static ArrayList<Point> points;
-    private Tree tree;
+    Tree tree;
+    Player player;
+    
     public Screen(int size){
         points = new ArrayList<Point>();
-        for(int i = 0; i < 1024; i++){
-            double t = 2*Math.PI*i/1024.0;
-            Point p = new Point((int)(size*((t*Math.cos(2*t)/(4*Math.PI))+0.5)),
-                                (int)(size*((t*Math.sin(2*t)/(4*Math.PI))+0.5)));
-            p.x += Math.random(); p.y += Math.random();
-        }
+        player = new Player(size/2,size/2,size,10);
+        points.add(player.getPos());
         tree = new Tree(0,0,size,size);
+        Thread t = new Thread(player);
+        t.start();
     }
     public void paintComponent(Graphics g){
         Graphics2D canvas = (Graphics2D) g;
+        tree.draw(canvas);
         canvas.setColor(Color.RED);
+        points.set(0,player.getPos());
         for(Point p : points){
             canvas.fillOval(p.x-3,p.y-3,6,6);
         }
-        tree.draw(canvas);
     }
     public void nextFrame(){
         repaint();

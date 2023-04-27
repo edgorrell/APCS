@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Player
+comment1.params=x\ y\ size\ speed
+comment1.target=Player(int,\ int,\ int,\ int)
+comment2.params=
+comment2.target=java.awt.Point\ getPos()
+comment3.params=
+comment3.target=void\ draw()
+comment4.params=
+comment4.target=void\ run()
+numComments=5
