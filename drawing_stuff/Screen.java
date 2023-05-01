@@ -23,7 +23,7 @@ public class Screen extends JComponent{
     public void paintComponent(Graphics g){
         Graphics2D canvas = (Graphics2D) g;
         tree.draw(canvas);
-        canvas.setColor(Color.RED);
+        canvas.setColor(Color.BLACK);
         points.set(0,player.getPos());
         for(Point p : points){
             canvas.fillOval(p.x-3,p.y-3,6,6);

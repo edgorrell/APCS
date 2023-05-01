@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Poster
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=img\ theta\ nWidth\ nHeight
+comment2.target=java.awt.image.BufferedImage\ rotate(java.awt.image.BufferedImage,\ double,\ int,\ int)
+numComments=3
