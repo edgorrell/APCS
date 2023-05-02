@@ -13,7 +13,8 @@ public class Poster{
     static int tileX = 3, tileY = 2;
     
     public static void main(String[] args) throws IOException{
-        base = ImageIO.read(new File("images/pipe.png"));
+        File f = new File("images/pipe.jpg");
+        base = ImageIO.read(f);
         poster = new BufferedImage(base.getWidth()*tileX,base.getHeight()*tileY,base.getType());
         canvas = (Graphics2D) poster.getGraphics();
         ImageIO.write(poster,"poster",new File("images/poster.png"));
@@ -75,6 +76,10 @@ public class Poster{
     public static BufferedImage Image6(BufferedImage base){
         BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
         return img;
+    }
+    
+    public static Color getPixel(BufferedImage img, int x, int y){
+        return new Color(img.getRGB(x,y));
     }
     
     public static void setPixel(BufferedImage img, Color c, int x, int y){
