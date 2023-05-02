@@ -8,18 +8,76 @@ import javax.imageio.*;
 import java.awt.image.*;
 
 public class Poster{
-    static BufferedImage image, poster;
+    static BufferedImage base, temp, poster;
     static Graphics2D canvas;
     static int tileX = 3, tileY = 2;
     
     public static void main(String[] args) throws IOException{
-        image = ImageIO.read(new File(""));
-        poster = new BufferedImage(image.getWidth()*tileX,image.getHeight()*tileY,image.getType());
+        base = ImageIO.read(new File("images/pipe.png"));
+        poster = new BufferedImage(base.getWidth()*tileX,base.getHeight()*tileY,base.getType());
         canvas = (Graphics2D) poster.getGraphics();
         ImageIO.write(poster,"poster",new File("images/poster.png"));
+        
+        int index = 1; 
+        for(int x = 0; x < tileX; x++){
+            for(int y = 0; y < tileY; y++){
+                switch(index){
+                    case 1:
+                        //temp = Image1(base);
+                        break;
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        
+                        break;
+                    case 4:
+                        
+                        break;
+                    case 5:
+                        
+                        break;
+                    case 6:
+                        temp = base;
+                        break;
+                }
+                canvas.drawImage(temp,null,x*base.getWidth(),y*base.getHeight());
+                index++;
+            }
+        }
     }
     
-    public void setPixel(BufferedImage img, Color c, int x, int y){
+    public static BufferedImage Image1(BufferedImage base){
+        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
+        return img;
+    }
+    
+    public static BufferedImage Image2(BufferedImage base){
+        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
+        return img;
+    }
+    
+    public static BufferedImage Image3(BufferedImage base){
+        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
+        return img;
+    }
+    
+    public static BufferedImage Image4(BufferedImage base){
+        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
+        return img;
+    }
+    
+    public static BufferedImage Image5(BufferedImage base){
+        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
+        return img;
+    }
+    
+    public static BufferedImage Image6(BufferedImage base){
+        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
+        return img;
+    }
+    
+    public static void setPixel(BufferedImage img, Color c, int x, int y){
         img.getGraphics().setColor(c);
         img.getGraphics().fillRect(x,y,x+1,y+1);
     }
