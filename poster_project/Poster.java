@@ -13,11 +13,12 @@ public class Poster{
     static int tileX = 3, tileY = 2;
     
     public static void main(String[] args) throws IOException{
-        File f = new File("images/pipe.jpg");
+        File f = new File("C:\\Users\\Evan\\OneDrive\\Desktop\\APCS\\poster_project\\images\\pipe.png");
+        System.out.println(f.exists());
+        System.out.println(f.canRead());
         base = ImageIO.read(f);
         poster = new BufferedImage(base.getWidth()*tileX,base.getHeight()*tileY,base.getType());
         canvas = (Graphics2D) poster.getGraphics();
-        ImageIO.write(poster,"poster",new File("images/poster.png"));
         
         int index = 1; 
         for(int x = 0; x < tileX; x++){
@@ -46,6 +47,10 @@ public class Poster{
                 index++;
             }
         }
+        f = new File("C:\\Users\\Evan\\OneDrive\\Desktop\\APCS\\poster_project\\images\\poster.png");
+        ImageIO.write(poster,"poster",f);
+        System.out.println(f.exists());
+        System.out.println(f.canRead());
     }
     
     public static BufferedImage Image1(BufferedImage base){
