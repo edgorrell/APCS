@@ -8,20 +8,21 @@ import javax.imageio.*;
 import java.awt.image.*;
 
 public class Poster{
-    static BufferedImage base, temp, poster;
-    static Graphics2D canvas;
-    static int tileX = 5, tileY = 5, width, height;
+    static final BufferedImage base = getBase();
+    static BufferedImage poster, img;
+    static Graphics2D canvas, temp;
+    static int tileX = 1, tileY = 1;
+    static final int type = getBase().getType();
     
     public static void main(String[] args) throws IOException{
-        base = ImageIO.read(new File("poster_project/images/pipe.png"));
-        width = base.getWidth();
-        height = base.getHeight();
-        poster = new BufferedImage(width*tileX,height*tileY,base.getType());
+        poster = new BufferedImage(base.getWidth()*tileX,base.getHeight()*tileY,base.getType());
         canvas = (Graphics2D) poster.createGraphics();
         
         int i = 1; 
         for(int x = 0; x < tileX; x++){
             for(int y = 0; y < tileY; y++){
+                img = getBase();
+                temp = img.createGraphics();
                 switch(i){
                     case 1:
                         //temp = Image1(base);
@@ -39,10 +40,10 @@ public class Poster{
                         
                         //break;
                     case 6:
-                        
+                        mirrorHorizontal(base,temp);
                         //break;
                 }
-                canvas.drawImage(base,null,x*width,y*height);
+                canvas.drawImage(img,null,x*base.getWidth(),y*base.getHeight());
                 i++;
             }
         }
@@ -80,28 +81,32 @@ public class Poster{
         return img;
     }
     
-    public static Color getColor(BufferedImage img, int x, int y){
-        return new Color(img.getRGB(x,y));
+    public static BufferedImage getBase(){
+        try{
+            return ImageIO.read(new File("poster_project/images/pipe.png"));
+        } catch(Exception e){}
+        return null;
     }
     
-    public static void setColor(BufferedImage img, Color c, int x, int y){
-        img.getGraphics().setColor(c);
-        img.getGraphics().fillRect(x,y,x+1,y+1);
+    public static Color getColor(BufferedImage base, int x, int y){
+        return new Color(base.getRGB(x,y));
+    }
+    
+    public static void setColor(Graphics2D canvas, Color c, int x, int y){
+       canvas.setColor(c);
+       canvas.fillRect(x,y,x+1,y+1);
     }
     
     // https://stackoverflow.com/questions/23457754/how-to-flip-bufferedimage-in-java
     // use for "better" flips/mirrors
     
-    public BufferedImage mirrorDownAboutMiddle(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        
-        for(int x = 0; x < base.getWidth(); x++){
-            for(int y = 0; y < base.getHeight()/2;y++){
-                setColor(base,getColor(base,x,y),x,height-y-1);
+    public static Graphics2D mirrorHorizontal(BufferedImage base, Graphics2D canvas){
+        for(int x = 0; x < base.getWidth()/2; x++){
+            for(int y = 0; y < base.getHeight(); y++){
+                setColor(canvas,getColor(base,x,y),base.getWidth()-x-1,y);
             }
         }
-        
-        return img;
+        return canvas;
     }
     
     // theta is in degrees
