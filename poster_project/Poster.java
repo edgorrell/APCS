@@ -8,77 +8,38 @@ import javax.imageio.*;
 import java.awt.image.*;
 
 public class Poster{
-    static final BufferedImage base = getBase();
-    static BufferedImage poster, img;
-    static Graphics2D canvas, temp;
-    static int tileX = 1, tileY = 1;
-    static final int type = getBase().getType();
+    static int tileX = 15, tileY = 15;
     
     public static void main(String[] args) throws IOException{
-        poster = new BufferedImage(base.getWidth()*tileX,base.getHeight()*tileY,base.getType());
-        canvas = (Graphics2D) poster.createGraphics();
+        BufferedImage poster = new BufferedImage(getBaseWidth()*tileX,getBaseHeight()*tileY,getBaseType());
+        Graphics2D canvas = poster.createGraphics();
+        BufferedImage img;
         
-        int i = 1; 
-        for(int x = 0; x < tileX; x++){
-            for(int y = 0; y < tileY; y++){
-                img = getBase();
-                temp = img.createGraphics();
-                switch(i){
-                    case 1:
-                        //temp = Image1(base);
-                        //break;
-                    case 2:
-                        
-                        //break;
-                    case 3:
-                        
-                        //break;
-                    case 4:
-                        
-                        //break;
-                    case 5:
-                        
-                        //break;
-                    case 6:
-                        mirrorHorizontal(base,temp);
-                        //break;
-                }
-                canvas.drawImage(img,null,x*base.getWidth(),y*base.getHeight());
-                i++;
-            }
+        canvas.setColor(Color.WHITE);
+        canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
+        for(int i = 0; i < 500; i++){
+            img = rotate(getBase(),360*Math.random(),1280,1280);
+            canvas.drawImage(
+                img,null,
+                (int)(tileX*getBaseWidth()*Math.random())-getBaseWidth()/2,
+                (int)(tileY*getBaseHeight()*Math.random())-getBaseHeight()/2
+            );
         }
+        
         new File("poster_project/images/poster.png").delete();
         ImageIO.write(poster,"png",new File("poster_project/images/poster.png"));
     }
     
-    public static BufferedImage Image1(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        return img;
+    public static int getBaseType(){
+        return getBase().getType();
     }
     
-    public static BufferedImage Image2(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        return img;
+    public static int getBaseWidth(){
+        return getBase().getWidth();
     }
     
-    public static BufferedImage Image3(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        return img;
-    }
-    
-    public static BufferedImage Image4(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        return img;
-    }
-    
-    public static BufferedImage Image5(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        return img;
-    }
-    
-    public static BufferedImage Image6(BufferedImage base){
-        BufferedImage img = new BufferedImage(base.getWidth(),base.getHeight(),base.getType());
-        return img;
+    public static int getBaseHeight(){
+        return getBase().getHeight();
     }
     
     public static BufferedImage getBase(){
