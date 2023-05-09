@@ -3,7 +3,7 @@ package poster_project;
 import java.io.*;
 import java.awt.*;
 import java.util.*;
-import javax.swing.*;
+import java.awt.geom.*;
 import javax.imageio.*;
 import java.awt.image.*;
 
@@ -18,11 +18,13 @@ public class Poster{
         canvas.setColor(Color.WHITE);
         canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
         for(int i = 0; i < 500; i++){
-            img = rotate(getBase(),360*Math.random(),1280,1280);
+            img = rotate(getBase(),1280,1280,360*Math.random());
+            img = resize(img,1280,1280);
             canvas.drawImage(
-                img,null,
+                img,
                 (int)(tileX*getBaseWidth()*Math.random())-getBaseWidth()/2,
-                (int)(tileY*getBaseHeight()*Math.random())-getBaseHeight()/2
+                (int)(tileY*getBaseHeight()*Math.random())-getBaseHeight()/2,
+                null
             );
         }
         
@@ -49,37 +51,21 @@ public class Poster{
         return null;
     }
     
-    public static Color getColor(BufferedImage base, int x, int y){
-        return new Color(base.getRGB(x,y));
-    }
-    
-    public static void setColor(Graphics2D canvas, Color c, int x, int y){
-       canvas.setColor(c);
-       canvas.fillRect(x,y,x+1,y+1);
-    }
-    
-    // https://stackoverflow.com/questions/23457754/how-to-flip-bufferedimage-in-java
-    // use for "better" flips/mirrors
-    
-    public static Graphics2D mirrorHorizontal(BufferedImage base, Graphics2D canvas){
-        for(int x = 0; x < base.getWidth()/2; x++){
-            for(int y = 0; y < base.getHeight(); y++){
-                setColor(canvas,getColor(base,x,y),base.getWidth()-x-1,y);
-            }
-        }
-        return canvas;
+    public static BufferedImage resize(BufferedImage img, int width, int height){
+        BufferedImage newImage = new BufferedImage(width,height,img.getType());
+        newImage.createGraphics().drawImage(img,Math.abs(img.getWidth()-width)/2,Math.abs(img.getHeight()-height)/2,null);
+        return newImage;
     }
     
     // theta is in degrees
     // rotates about origin
-    public static BufferedImage rotate(BufferedImage img, double theta, int nWidth, int nHeight){
+    public static BufferedImage rotate(BufferedImage img, int nWidth, int nHeight, double theta){
+        double rads = Math.toRadians(-theta);
         int width = img.getWidth();
         int height = img.getHeight();
 
-        BufferedImage rotatedImage = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D graphics = rotatedImage.createGraphics();
-
+        BufferedImage newImage = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = newImage.createGraphics();
         graphics.setRenderingHint(
             RenderingHints.KEY_INTERPOLATION,
             RenderingHints.VALUE_INTERPOLATION_BICUBIC
@@ -87,9 +73,28 @@ public class Poster{
 
         graphics.translate((nWidth - width) / 2, (nHeight - height) / 2);
         graphics.rotate(Math.toRadians(theta), width/2.0, height/2.0);
-        graphics.drawImage(img,0,0,null);
+        graphics.drawImage(img, 0, 0, null);
         graphics.dispose();
 
-        return rotatedImage;
+        return newImage;
+    }
+    
+    public static BufferedImage scale(BufferedImage img, int dx, int dy){
+        AffineTransform at = new AffineTransform();
+        at.concatenate(AffineTransform.getScaleInstance(dx, dy));
+        at.concatenate(AffineTransform.getTranslateInstance(0, -img.getHeight()));
+        return transform(img, at);
+    }
+    
+    public static BufferedImage transform(BufferedImage img, AffineTransform at){
+        BufferedImage newImage = new BufferedImage(
+            img.getWidth(), img.getHeight(),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        Graphics2D g = newImage.createGraphics();
+        g.transform(at);
+        g.drawImage(img, 0, 0, null);
+        g.dispose();
+        return newImage;
     }
 }
