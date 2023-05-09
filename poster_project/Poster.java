@@ -79,9 +79,9 @@ public class Poster{
         return newImage;
     }
     
-    public static BufferedImage scale(BufferedImage img, int dx, int dy){
+    public static BufferedImage scale(BufferedImage img, int sx, int sy){
         AffineTransform at = new AffineTransform();
-        at.concatenate(AffineTransform.getScaleInstance(dx, dy));
+        at.concatenate(AffineTransform.getScaleInstance(sx, sy));
         at.concatenate(AffineTransform.getTranslateInstance(0, -img.getHeight()));
         return transform(img, at);
     }
