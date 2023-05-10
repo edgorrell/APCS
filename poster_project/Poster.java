@@ -8,26 +8,45 @@ import javax.imageio.*;
 import java.awt.image.*;
 
 public class Poster{
-    static int tileX = 15, tileY = 15;
+    final static int type = getBaseType();
+    static int tileX = 8, tileY = 8;
     
     public static void main(String[] args) throws IOException{
-        BufferedImage poster = new BufferedImage(getBaseWidth()*tileX,getBaseHeight()*tileY,getBaseType());
+        BufferedImage poster = new BufferedImage(
+            tileX*getBaseWidth(),
+            tileY*getBaseHeight(),
+            getBaseType()
+        );
         Graphics2D canvas = poster.createGraphics();
-        BufferedImage img;
-        
+        BufferedImage img = getBase();
+        Graphics2D g = img.createGraphics();
+        int i;
+                
         canvas.setColor(Color.WHITE);
         canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
-        for(int i = 0; i < 500; i++){
-            img = rotate(getBase(),1280,1280,360*Math.random());
-            img = resize(img,1280,1280);
-            canvas.drawImage(
-                img,
-                (int)(tileX*getBaseWidth()*Math.random())-getBaseWidth()/2,
-                (int)(tileY*getBaseHeight()*Math.random())-getBaseHeight()/2,
-                null
-            );
+        Color[] colors = {Color.RED,Color.GREEN,Color.BLUE,Color.YELLOW};
+        for(int x = 0; x < tileX; x++){
+            for(int y = 0; y < tileY; y++){
+                img = rotate(getBase(),getBaseWidth(),getBaseHeight(),360*Math.random());
+                g = img.createGraphics();
+                canvas.drawImage(img,x*getBaseWidth(),y*getBaseHeight(),null);
+                g.dispose();
+            }
         }
-        
+        for(int x = 0; x < tileX; x++){
+            for(int y = 0; y < tileY; y++){
+                setAlpha(canvas,(float)Math.random());
+                canvas.setColor(new Color(
+                    (int)(255*Math.random()),
+                    (int)(255*Math.random()),
+                    (int)(255*Math.random()))
+                );
+                canvas.fillRect(
+                    x*getBaseWidth(),y*getBaseHeight(),
+                    getBaseWidth(),getBaseHeight()
+                );
+            }
+        }
         new File("poster_project/images/poster.png").delete();
         ImageIO.write(poster,"png",new File("poster_project/images/poster.png"));
     }
@@ -41,7 +60,7 @@ public class Poster{
     }
     
     public static int getBaseHeight(){
-        return getBase().getHeight();
+        return getBase().getWidth();
     }
     
     public static BufferedImage getBase(){
@@ -49,6 +68,19 @@ public class Poster{
             return ImageIO.read(new File("poster_project/images/pipe.png"));
         } catch(Exception e){}
         return null;
+    }
+    
+    public Color getColor(BufferedImage img, int x, int y){
+        return new Color(img.getRGB(x,y));
+    }
+    
+    public void setColor(Color c, int x, int y){
+        
+    }
+    
+    public static void setAlpha(Graphics2D g, float a){
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,a);
+        g.setComposite(ac);
     }
     
     public static BufferedImage resize(BufferedImage img, int width, int height){
@@ -60,7 +92,7 @@ public class Poster{
     // theta is in degrees
     // rotates about origin
     public static BufferedImage rotate(BufferedImage img, int nWidth, int nHeight, double theta){
-        double rads = Math.toRadians(-theta);
+        double rads = Math.toRadians(theta);
         int width = img.getWidth();
         int height = img.getHeight();
 
@@ -79,21 +111,27 @@ public class Poster{
         return newImage;
     }
     
-    public static BufferedImage scale(BufferedImage img, int sx, int sy){
+    public static BufferedImage scale(BufferedImage img, double sx, double sy){
         AffineTransform at = new AffineTransform();
         at.concatenate(AffineTransform.getScaleInstance(sx, sy));
-        at.concatenate(AffineTransform.getTranslateInstance(0, -img.getHeight()));
+        if(sx < 0){
+            at.concatenate(AffineTransform.getTranslateInstance(-img.getWidth(),0));
+        }
+        if(sy < 0){
+            at.concatenate(AffineTransform.getTranslateInstance(0,-img.getHeight()));
+        }
         return transform(img, at);
     }
     
     public static BufferedImage transform(BufferedImage img, AffineTransform at){
         BufferedImage newImage = new BufferedImage(
-            img.getWidth(), img.getHeight(),
+            (int)(Math.abs(img.getWidth()*at.getScaleX()))*2, 
+            (int)(Math.abs(img.getHeight()*at.getScaleY()))*2,
             BufferedImage.TYPE_INT_ARGB
         );
         Graphics2D g = newImage.createGraphics();
         g.transform(at);
-        g.drawImage(img, 0, 0, null);
+        g.drawImage(img,0,0,null);
         g.dispose();
         return newImage;
     }
