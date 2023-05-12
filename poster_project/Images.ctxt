@@ -1,7 +1,19 @@
 #BlueJ class context
 comment0.target=Images
-comment1.params=img\ num
+comment1.params=base\ num
 comment1.target=java.awt.image.BufferedImage\ getImage(java.awt.image.BufferedImage,\ int)
 comment2.params=
 comment2.target=void\ Temple()
-numComments=3
+comment3.params=img
+comment3.target=java.awt.image.BufferedImage\ img1(java.awt.image.BufferedImage)
+comment4.params=img
+comment4.target=java.awt.image.BufferedImage\ img2(java.awt.image.BufferedImage)
+comment5.params=img
+comment5.target=java.awt.image.BufferedImage\ img3(java.awt.image.BufferedImage)
+comment6.params=img
+comment6.target=java.awt.image.BufferedImage\ img4(java.awt.image.BufferedImage)
+comment7.params=img
+comment7.target=java.awt.image.BufferedImage\ img5(java.awt.image.BufferedImage)
+comment8.params=img
+comment8.target=java.awt.image.BufferedImage\ img6(java.awt.image.BufferedImage)
+numComments=9
