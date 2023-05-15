@@ -112,10 +112,10 @@ public class Poster{
         AffineTransform at = new AffineTransform();
         at.concatenate(AffineTransform.getScaleInstance(sx, sy));
         if(sx < 0){
-            at.concatenate(AffineTransform.getTranslateInstance(-img.getWidth()*at.getScaleX(),0));
+            at.concatenate(AffineTransform.getTranslateInstance(img.getWidth()*at.getScaleX(),0));
         }
         if(sy < 0){
-            at.concatenate(AffineTransform.getTranslateInstance(0,-img.getHeight()*at.getScaleY()));
+            at.concatenate(AffineTransform.getTranslateInstance(0,img.getHeight()*at.getScaleY()));
         }
         return transform(img, at);
     }
