@@ -7,12 +7,12 @@ import java.awt.geom.*;
 import javax.imageio.*;
 import java.awt.image.*;
 
-public class Poster{
+public class Poster extends Image{
     final static int type = getBaseType();
     static int tileX = 3, tileY = 2;
     
     public static void main(String[] args) throws IOException{
-        int max = max(getBaseWidth(), getBaseHeight());
+        int max = getMax(getBaseBG());
         BufferedImage poster = new BufferedImage(
             tileX*max,
             tileY*max,
@@ -21,13 +21,11 @@ public class Poster{
         Graphics2D canvas = poster.createGraphics();
         canvas.setColor(Color.WHITE);
         canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
-        BufferedImage img;
         
         int i = 1;
         for(int x = 0; x < tileX; x++){
             for(int y = 0; y < tileY; y++){
-                img = scale(getBase(),-1,1);
-                canvas.drawImage(img,x*max,y*max,null);
+                canvas.drawImage(getImage(i,true),x*max,y*max,null);
                 i++;
             }
         }
@@ -36,100 +34,80 @@ public class Poster{
         ImageIO.write(poster,"png",new File("poster_project/images/poster.png"));
     }
     
-    public static int getBaseType(){
-        return getBase().getType();
-    }
-    
-    public static int getBaseWidth(){
-        return getBase().getWidth();
-    }
-    
-    public static int getBaseHeight(){
-        return getBase().getWidth();
-    }
-    
-    public static int max(int a, int b){
-        return (a+b+Math.abs(a-b))/2;
-    }
-    
-    public static BufferedImage getBase(){
-        try{
-            return ImageIO.read(new File("poster_project/images/pipe.png"));
-        } catch(Exception e){}
+    public static BufferedImage getImage(int num, boolean hasBG){
+        BufferedImage base;
+        if(hasBG){ base = getBaseBG(); }
+        else base = getBase();
+        int max = getMax(base);
+        BufferedImage img = resize(base,max,max);
+        switch(num){
+            case 1: return img1(img);
+            case 2: return img2(img);
+            case 3: return img3(img);
+            case 4: return img4(img);
+            case 5: return img5(img);
+            case 6: return img6(img);
+        }
         return null;
     }
     
-    public static Color getColor(BufferedImage img, int x, int y){
-        return new Color(img.getRGB(x,y));
+    public static BufferedImage img1(BufferedImage img){
+        return img;
     }
     
-    public static void setColor(BufferedImage img, int x, int y, Color c){
-        img.setRGB(x,y,c.getRGB());
-    }
-    
-    public static Color average(Color c1, Color c2){
-        return new Color(
-            (c1.getRed()+c2.getRed())/2,
-            (c1.getGreen()+c2.getGreen())/2,
-            (c1.getBlue()+c2.getBlue())/2
-        );
-    }
-    
-    public static void setAlpha(Graphics2D g, float a){
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,a);
-        g.setComposite(ac);
-    }
-    
-    public static BufferedImage resize(BufferedImage img, int width, int height){
-        BufferedImage newImage = new BufferedImage(width,height,img.getType());
-        newImage.createGraphics().drawImage(img,Math.abs(img.getWidth()-width)/2,Math.abs(img.getHeight()-height)/2,null);
-        return newImage;
-    }
-    
-    // theta is in degrees
-    // rotates about origin
-    public static BufferedImage rotate(BufferedImage img, int nWidth, int nHeight, double theta){
-        double rads = Math.toRadians(theta);
-        int width = img.getWidth();
-        int height = img.getHeight();
-
-        BufferedImage newImage = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = newImage.createGraphics();
-        graphics.setRenderingHint(
-            RenderingHints.KEY_INTERPOLATION,
-            RenderingHints.VALUE_INTERPOLATION_BICUBIC
-        );
-
-        graphics.translate((nWidth - width) / 2, (nHeight - height) / 2);
-        graphics.rotate(Math.toRadians(theta), width/2.0, height/2.0);
-        graphics.drawImage(img, 0, 0, null);
-        graphics.dispose();
-
-        return newImage;
-    }
-    
-    public static BufferedImage scale(BufferedImage img, double sx, double sy){
-        AffineTransform at = new AffineTransform();
-        at.concatenate(AffineTransform.getScaleInstance(sx, sy));
-        if(sx < 0){
-            at.concatenate(AffineTransform.getTranslateInstance(img.getWidth()*at.getScaleX(),0));
+    public static BufferedImage img2(BufferedImage img){
+        int max = getMax(img);
+        BufferedImage newImg = new BufferedImage(img.getWidth(),img.getHeight(),img.getType());
+        Graphics2D g = newImg.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0,max,max);
+        for(int x = 125; x < max-125; x++){
+            for(int y = 300; y < max-300; y++){
+                Color c = getColor(img,x,y); if(c.equals(Color.WHITE)){continue;};
+                Color hsv = getHSV((float)360*x/(max-250),1,getValue(c));
+                g.setColor(hsv);
+                g.fillRect(x,y,1,1);
+            }
         }
-        if(sy < 0){
-            at.concatenate(AffineTransform.getTranslateInstance(0,img.getHeight()*at.getScaleY()));
-        }
-        return transform(img, at);
-    }
-    
-    public static BufferedImage transform(BufferedImage img, AffineTransform at){
-        BufferedImage newImage = new BufferedImage(
-            (int)(Math.abs(img.getWidth()*at.getScaleX()))*2, 
-            (int)(Math.abs(img.getHeight()*at.getScaleY()))*2,
-            BufferedImage.TYPE_INT_ARGB
-        );
-        Graphics2D g = newImage.createGraphics();
-        g.transform(at);
-        g.drawImage(img,0,0,null);
         g.dispose();
-        return newImage;
+        return newImg;
+    }
+    
+    public static BufferedImage img3(BufferedImage img){
+        BufferedImage newImg = new BufferedImage(img.getWidth(),img.getHeight(),img.getType());
+        Graphics2D g = newImg.createGraphics(); 
+        g.drawImage(img,0,0,null);
+        int max = Poster.getMax(img);
+        BufferedImage left = img.getSubimage(0,0,max/2,max),
+                      right = img.getSubimage(max/2,0,max/2,max);
+        right = Poster.scale(right,-1,1);
+        g.drawImage(right,0,0,null);
+        BufferedImage half = newImg.getSubimage(0,0,max,max/2);
+        half = Poster.scale(half,1,-1);
+        g.drawImage(half,0,max/2,null);
+        g.dispose();
+        return newImg;
+    }
+    
+    public static BufferedImage img4(BufferedImage img){
+        return img;
+    }
+    
+    public static BufferedImage img5(BufferedImage img){
+        return img;
+    }
+    
+    public static BufferedImage img6(BufferedImage img){
+       return img;
+    }
+    
+    public static void Temple() throws IOException {
+        BufferedImage temple = ImageIO.read(new File("poster_project/images/temple.png"));
+        BufferedImage sub = temple.getSubimage(15,30,260,60);
+        //(16,87),(276,29) so its (16,29) with w = 260 and h = 60
+        sub = Poster.scale(sub,-1,1);
+        Graphics2D canvas = temple.createGraphics();
+        canvas.drawImage(sub,275,30,null);
+        ImageIO.write(temple,"png",new File("poster_project/images/temple_fixed.png"));
     }
 }
