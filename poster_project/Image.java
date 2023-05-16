@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import javax.imageio.*;
 import java.awt.image.*;
 
-public class Image{
+public abstract class Image{
     public static int getBaseType(){
         return getBase().getType();
     }
@@ -33,7 +33,7 @@ public class Image{
     
     public static BufferedImage getBaseBG(){
         try{
-            return ImageIO.read(new File("poster_project/images/temple.png"));
+            return ImageIO.read(new File("poster_project/images/pipe-bg.png"));
         } catch(Exception e){}
         return null;
     }
@@ -66,15 +66,15 @@ public class Image{
         return Color.getHSBColor(h/360,s,v);
     }
     
-    public static Color getColor(BufferedImage img, int x, int y){
+    public static Color getPixel(BufferedImage img, int x, int y){
         return new Color(img.getRGB(x,y));
     }
     
-    public static void setColor(BufferedImage img, int x, int y, Color c){
-        Graphics2D g = img.createGraphics();
+    // have no idea why this doesnt work
+    // works fine when copy code over
+    public static void setPixel(Graphics2D g, int x, int y, Color c){
         g.setColor(c);
         g.fillRect(x,y,1,1);
-        g.dispose();
     }
     
     public static void setAlpha(Graphics2D g, float a){
@@ -115,7 +115,7 @@ public class Image{
     
     // theta is in degrees
     // rotates about origin
-    public static BufferedImage rotate(BufferedImage img, int nWidth, int nHeight, double theta){
+    public static BufferedImage rotate(BufferedImage img, double theta, int nWidth, int nHeight){
         double rads = Math.toRadians(theta);
         int width = img.getWidth();
         int height = img.getHeight();
