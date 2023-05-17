@@ -22,7 +22,7 @@ public class Poster extends Image{
         canvas.setColor(Color.WHITE);
         canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
 
-        boolean[] hasBG = {true,true,true,true,false,false};
+        boolean[] hasBG = {true,true,false,true,false,false};
         int i = 1;
         for(int x = 0; x < tileX; x++){
             for(int y = 0; y < tileY; y++){
@@ -33,8 +33,8 @@ public class Poster extends Image{
         setAlpha(canvas,0.2f);
         BufferedImage bg = ImageIO.read(new File("poster_project/images/sus.png"));
         bg = scale(bg,
-            (double)poster.getWidth()/bg.getWidth(),
-            (double)poster.getHeight()/bg.getHeight()
+            (double)max/bg.getWidth(),
+            (double)max/bg.getHeight()
         );
         canvas.drawImage(bg,0,0,null);
         ImageIO.write(poster,"png",new File("poster_project/images/poster.png"));
@@ -42,8 +42,11 @@ public class Poster extends Image{
 
     public static BufferedImage getImage(int num, boolean hasBG){
         BufferedImage base;
-        if(hasBG){ base = getBaseBG(); }
-        else base = getBase();
+        if(hasBG){
+            base = getBaseBG();
+        } else {
+            base = getBase();
+        }
         int max = getMax(base);
         BufferedImage img = resize(base,max,max);
         switch(num){
@@ -84,15 +87,11 @@ public class Poster extends Image{
         int max = getMax(img);
         BufferedImage newImg = new BufferedImage(max,max,img.getType());
         Graphics2D g = newImg.createGraphics(); 
-        g.drawImage(img,0,0,null);
-        BufferedImage left = img.getSubimage(0,0,max/2,max),
-        right = img.getSubimage(max/2,0,max/2,max);
-        right = Poster.scale(right,-1,1);
-        g.drawImage(right,0,0,null);
-        BufferedImage half = newImg.getSubimage(0,0,max,max/2);
-        half = Poster.scale(half,1,-1);
-        g.drawImage(half,0,max/2,null);
-        g.dispose();
+        BufferedImage section = img.getSubimage(0,max/2,max/2,max/2);
+        g.drawImage(section,0,max/2,null);
+        g.drawImage(scale(section,1,-1),0,0,null);
+        g.drawImage(scale(section,-1,1),max/2,max/2,null);
+        g.drawImage(scale(section,-1,-1),max/2,0,null));
         return newImg;
     }
 
