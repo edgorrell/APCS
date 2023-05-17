@@ -8,7 +8,6 @@ import javax.imageio.*;
 import java.awt.image.*;
 
 public class Poster extends Image{
-    final static int type = getBaseType();
     static int tileX = 3, tileY = 2;
 
     public static void main(String[] args) throws IOException{
@@ -17,12 +16,12 @@ public class Poster extends Image{
                 tileX*max,
                 tileY*max,
                 getBaseType()
-            );
+        );
         Graphics2D canvas = poster.createGraphics();
         canvas.setColor(Color.WHITE);
         canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
 
-        boolean[] hasBG = {true,true,false,true,false,false};
+        boolean[] hasBG = {false,true,false,true,false,false};
         int i = 1;
         for(int x = 0; x < tileX; x++){
             for(int y = 0; y < tileY; y++){
@@ -30,17 +29,10 @@ public class Poster extends Image{
                 i++;
             }
         }
-        setAlpha(canvas,0.2f);
-        BufferedImage bg = ImageIO.read(new File("poster_project/images/sus.png"));
-        bg = scale(bg,
-            (double)max/bg.getWidth(),
-            (double)max/bg.getHeight()
-        );
-        canvas.drawImage(bg,0,0,null);
         ImageIO.write(poster,"png",new File("poster_project/images/poster.png"));
     }
 
-    public static BufferedImage getImage(int num, boolean hasBG){
+    public static BufferedImage getImage(int num, boolean hasBG) throws IOException {
         BufferedImage base;
         if(hasBG){
             base = getBaseBG();
@@ -60,8 +52,20 @@ public class Poster extends Image{
         return null;
     }
 
-    public static BufferedImage img1(BufferedImage img){
-        return img;
+    public static BufferedImage img1(BufferedImage img) throws IOException {
+        int max = getMax(img);
+        BufferedImage newImg = new BufferedImage(max,max,img.getType());
+        Graphics2D g = newImg.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0,max,max);
+        setAlpha(g,0.2f);
+        BufferedImage bg = ImageIO.read(new File("poster_project/images/sus.png"));
+        bg = scale(bg,(double)max/bg.getWidth(),(double)max/bg.getHeight());
+        g.drawImage(bg,0,0,null);
+        setAlpha(g,1.0f);
+        g.drawImage(img,0,0,null);
+        g.dispose();
+        return newImg;
     }
 
     public static BufferedImage img2(BufferedImage img){
@@ -86,12 +90,34 @@ public class Poster extends Image{
     public static BufferedImage img3(BufferedImage img){
         int max = getMax(img);
         BufferedImage newImg = new BufferedImage(max,max,img.getType());
-        Graphics2D g = newImg.createGraphics(); 
+        Graphics2D g = newImg.createGraphics();
         BufferedImage section = img.getSubimage(0,max/2,max/2,max/2);
         g.drawImage(section,0,max/2,null);
         g.drawImage(scale(section,1,-1),0,0,null);
         g.drawImage(scale(section,-1,1),max/2,max/2,null);
-        g.drawImage(scale(section,-1,-1),max/2,0,null));
+        g.drawImage(scale(section,-1,-1),max/2,0,null);
+        int[] xVals = {1,0,-1,-1,-1,0,1,1}, yVals = {1,1,1,0,-1,-1,-1,0};
+        float tolerance = 0.6f;
+        boolean check;
+        for(int x = 0; x < max; x++){
+            for(int y = 0; y < max; y++){
+                if(getValue(getPixel(newImg,x,y)) > 0.95){continue;}
+                check = false;
+                for(int q = 0; q < 8; q++){
+                    try{
+                        if(getValue(difference(getPixel(newImg,x,y),getPixel(newImg,x+xVals[q],y+yVals[q])))>tolerance){
+                            check = true;
+                        }
+                    } catch(Exception e){continue;}
+                }
+                if(check){
+                    setPixel(g,x,y,Color.BLACK);
+                } else {
+                    setPixel(g,x,y,Color.WHITE);
+                }
+            }
+        }
+        g.dispose();
         return newImg;
     }
 

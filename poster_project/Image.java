@@ -8,34 +8,28 @@ import javax.imageio.*;
 import java.awt.image.*;
 
 public abstract class Image{
-    public static int getBaseType(){
+    public static int getBaseType() throws IOException {
         return getBase().getType();
     }
     
-    public static int getBaseWidth(){
+    public static int getBaseWidth() throws IOException {
         return getBase().getWidth();
     }
     
-    public static int getBaseHeight(){
+    public static int getBaseHeight() throws IOException {
         return getBase().getWidth();
     }
     
-    public static int getBaseMax(){
+    public static int getBaseMax() throws IOException {
         return max(getBaseWidth(),getBaseHeight());
     }
     
-    public static BufferedImage getBase(){
-        try{
-            return ImageIO.read(new File("poster_project/images/pipe.png"));
-        } catch(Exception e){}
-        return null;
+    public static BufferedImage getBase() throws IOException {
+        return ImageIO.read(new File("poster_project/images/pipe.png"));
     }
     
-    public static BufferedImage getBaseBG(){
-        try{
-            return ImageIO.read(new File("poster_project/images/pipe-bg.png"));
-        } catch(Exception e){}
-        return null;
+    public static BufferedImage getBaseBG() throws IOException {
+        return ImageIO.read(new File("poster_project/images/pipe-bg.png"));
     }
     
     public static int max(int a, int b){
@@ -48,6 +42,14 @@ public abstract class Image{
     
     public static float getValue(Color c){
         return (float)((c.getRed() + c.getGreen() + c.getBlue())/(255*3.0));
+    }
+    
+    public static Color difference(Color c1, Color c2){
+        return new Color(
+            (int)(Math.abs(c1.getRed()-c2.getRed())),
+            (int)(Math.abs(c1.getGreen()-c2.getGreen())),
+            (int)(Math.abs(c1.getBlue()-c2.getBlue()))
+        );
     }
     
     public static Color multiply(Color c, float r){
@@ -70,8 +72,6 @@ public abstract class Image{
         return new Color(img.getRGB(x,y));
     }
     
-    // have no idea why this doesnt work
-    // works fine when copy code over
     public static void setPixel(Graphics2D g, int x, int y, Color c){
         g.setColor(c);
         g.fillRect(x,y,1,1);
