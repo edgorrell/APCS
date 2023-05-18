@@ -52,8 +52,8 @@ public abstract class Image{
         );
     }
     
-    public static Color multiply(Color c, float r){
-        return new Color(r*c.getRed(),r*c.getGreen(),r*c.getBlue());
+    public static Color multiply(Color c, double r){
+        return new Color((int)(r*c.getRed()),(int)(r*c.getGreen()),(int)(r*c.getBlue()));
     }
     
     public static Color average(Color c1, Color c2){
@@ -84,7 +84,8 @@ public abstract class Image{
     
     public static BufferedImage resize(BufferedImage img, int width, int height){
         BufferedImage newImage = new BufferedImage(width,height,img.getType());
-        newImage.createGraphics().drawImage(img,Math.abs(img.getWidth()-width)/2,Math.abs(img.getHeight()-height)/2,null);
+        Graphics2D g = newImage.createGraphics();
+        g.drawImage(img,Math.abs(img.getWidth()-width)/2,Math.abs(img.getHeight()-height)/2,null);
         return newImage;
     }
     

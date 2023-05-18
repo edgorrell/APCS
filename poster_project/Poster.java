@@ -96,27 +96,7 @@ public class Poster extends Image{
         g.drawImage(scale(section,1,-1),0,0,null);
         g.drawImage(scale(section,-1,1),max/2,max/2,null);
         g.drawImage(scale(section,-1,-1),max/2,0,null);
-        int[] xVals = {1,0,-1,-1,-1,0,1,1}, yVals = {1,1,1,0,-1,-1,-1,0};
-        float tolerance = 0.6f;
-        boolean check;
-        for(int x = 0; x < max; x++){
-            for(int y = 0; y < max; y++){
-                if(getValue(getPixel(newImg,x,y)) > 0.95){continue;}
-                check = false;
-                for(int q = 0; q < 8; q++){
-                    try{
-                        if(getValue(difference(getPixel(newImg,x,y),getPixel(newImg,x+xVals[q],y+yVals[q])))>tolerance){
-                            check = true;
-                        }
-                    } catch(Exception e){continue;}
-                }
-                if(check){
-                    setPixel(g,x,y,Color.BLACK);
-                } else {
-                    setPixel(g,x,y,Color.WHITE);
-                }
-            }
-        }
+        g.drawImage(rotate(newImg,90,max,max),0,0,null);
         g.dispose();
         return newImg;
     }
