@@ -64,6 +64,18 @@ public abstract class Image{
         );
     }
     
+    // mult = amount c1 is timed by
+    public static Color averageWeighted(Color c1, Color c2, double mult){
+        double a = mult, b = 1 - a;
+        Color c = new Color(
+            (int)(c1.getRed()*a + c2.getRed()*b),
+            (int)(c1.getGreen()*a + c2.getGreen()*b),
+            (int)(c1.getBlue()*a + c2.getBlue()*b)
+        );
+        return c;
+    }
+    
+    // h = [0,360], s = [0,1], v = [0,1]
     public static Color getHSV(float h, float s, float v){
         return Color.getHSBColor(h/360,s,v);
     }
@@ -77,9 +89,21 @@ public abstract class Image{
         g.fillRect(x,y,1,1);
     }
     
-    public static void setAlpha(Graphics2D g, float a){
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,a);
-        g.setComposite(ac);
+    public static BufferedImage tint(BufferedImage img, Color c, double mult, double tolerance){
+        int max = getMax(img);
+        BufferedImage newImg = new BufferedImage(max,max,img.getType());
+        Graphics2D g = newImg.createGraphics();
+        tolerance = 1 - tolerance;
+        for(int x = 0; x < max; x++){
+            for(int y = 0; y < max; y++){
+                Color temp = getPixel(img,x,y);
+                if(getValue(temp) > tolerance){
+                    setPixel(g,x,y,averageWeighted(c,temp,mult));
+                }
+            }
+        }
+        g.dispose();
+        return newImg;
     }
     
     public static BufferedImage resize(BufferedImage img, int width, int height){
@@ -134,5 +158,10 @@ public abstract class Image{
         graphics.dispose();
 
         return newImage;
+    }
+    
+    public static void setAlpha(Graphics2D g, float a){
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,a);
+        g.setComposite(ac);
     }
 }

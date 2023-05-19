@@ -20,6 +20,11 @@ public class Poster extends Image{
         Graphics2D canvas = poster.createGraphics();
         canvas.setColor(Color.WHITE);
         canvas.fillRect(0,0,tileX*getBaseWidth(),tileY*getBaseHeight());
+        BufferedImage bg = ImageIO.read(new File("poster_project/images/sus.png"));
+        bg = scale(bg,2*(double)max/bg.getWidth(),(double)max/bg.getHeight());
+        setAlpha(canvas,0.3f);
+        canvas.drawImage(bg,0,0,null);
+        setAlpha(canvas,1.0f);
 
         boolean[] hasBG = {false,true,false,true,false,false};
         int i = 1;
@@ -53,19 +58,7 @@ public class Poster extends Image{
     }
 
     public static BufferedImage img1(BufferedImage img) throws IOException {
-        int max = getMax(img);
-        BufferedImage newImg = new BufferedImage(max,max,img.getType());
-        Graphics2D g = newImg.createGraphics();
-        g.setColor(Color.WHITE);
-        g.fillRect(0,0,max,max);
-        setAlpha(g,0.2f);
-        BufferedImage bg = ImageIO.read(new File("poster_project/images/sus.png"));
-        bg = scale(bg,(double)max/bg.getWidth(),(double)max/bg.getHeight());
-        g.drawImage(bg,0,0,null);
-        setAlpha(g,1.0f);
-        g.drawImage(img,0,0,null);
-        g.dispose();
-        return newImg;
+        return img;
     }
 
     public static BufferedImage img2(BufferedImage img){
@@ -87,7 +80,7 @@ public class Poster extends Image{
         return newImg;
     }
 
-    public static BufferedImage img3(BufferedImage img){
+    public static BufferedImage img3(BufferedImage img) throws IOException {
         int max = getMax(img);
         BufferedImage newImg = new BufferedImage(max,max,img.getType());
         Graphics2D g = newImg.createGraphics();
@@ -96,7 +89,8 @@ public class Poster extends Image{
         g.drawImage(scale(section,1,-1),0,0,null);
         g.drawImage(scale(section,-1,1),max/2,max/2,null);
         g.drawImage(scale(section,-1,-1),max/2,0,null);
-        g.drawImage(rotate(newImg,90,max,max),0,0,null);
+        BufferedImage skull = ImageIO.read(new File("poster_project/images/skull.png"));
+        g.drawImage(skull,max/2-getMax(skull)/2,max/2-getMax(skull)/2,null);
         g.dispose();
         return newImg;
     }
@@ -128,11 +122,13 @@ public class Poster extends Image{
         Graphics2D g = newImg.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0,0,max,max);
-        int gen = 72;
+        int gen = 24;
         for(int i = 0; i < gen; i++){
             BufferedImage temp = rotate(img,(double)360/gen*i,max,max);
             temp = scale(temp,(gen-i)/(double)gen,(gen-i)/(double)gen);
-            g.drawImage(temp,0,0,null);
+            Color c = getHSV((float)360/gen*i,1,1);
+            temp = tint(temp,c,0.5,0.5);
+            g.drawImage(temp,max/2-getMax(temp)/4,max/2-getMax(temp)/4,null);
         }
         g.dispose();
         return newImg;
