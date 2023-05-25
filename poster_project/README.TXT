@@ -4,7 +4,7 @@ Poster Methods:
 
 2. Full Mirror: Creates a subimage of 1/4 the original. Flips and copies the image for each quadrent. Draws an image of a skull emoji in the center of the pipes.
 
-3. Recursion: The method starts with the original image and copies it 72 times, with each time the image being shrunk, rotated, and tinted. The tint is done by going trough each pixel of the image, checking if the value of the pixel is within the specified range, and then combines the tint color with the original color.
+3. Recursion: The method starts with the original image and copies it 24 times, with each time the image being shrunk, rotated, and tinted. The tint is done by going trough each pixel of the image, checking if the value of the pixel is within the specified range, and then combines the tint color with the original color.
 
 4. HSV Filter: This method goes over every pixel in the image. If the value of the pixel is >= 0.95, detecting the white background, it skips the pixel. Otherwise it generates a HSV color based on the x-value and the value of the pixel.
 
