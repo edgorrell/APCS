@@ -25,9 +25,7 @@ public class Screen extends JComponent{
         tree.draw(canvas);
         canvas.setColor(Color.BLACK);
         points.set(0,player.getPos());
-        for(Point p : points){
-            canvas.fillOval(p.x-3,p.y-3,6,6);
-        }
+        player.draw(canvas);
     }
     public void nextFrame(){
         repaint();

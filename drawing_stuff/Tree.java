@@ -25,7 +25,9 @@ public class Tree extends JComponent{
         System.out.println(getMaxArea());
         canvas.setColor(Color.getHSBColor(this.getArea()/this.getMaxArea(),1,1));
         canvas.fillRect(x, y, w, h);
-        branch();
+        if(this.getArea() > 1600){
+            branch();
+        }
         if(this.children == null){ return; }
         for(Tree t : children){
             t.draw(canvas);

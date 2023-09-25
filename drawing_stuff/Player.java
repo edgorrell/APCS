@@ -21,8 +21,8 @@ public class Player implements Runnable{
         return new Point(this.x,this.y);
     }
     
-    public void draw(){
-        
+    public void draw(Graphics2D canvas){
+        canvas.fillRect(x,y,x+2,y+2);
     }
     
     public void run(){
